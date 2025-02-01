@@ -7,6 +7,5 @@
 int main() {
     // let's create a Task object
     Task t = Task("first task", "some_task_description");
-
     std::cout << t ;
 }

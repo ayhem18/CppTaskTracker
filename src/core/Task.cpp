@@ -12,7 +12,7 @@ void Task::updateCommon() {
 void Task::setId (const std::string& id) {
     this -> taskId = id;
     this -> updateCommon();
-}
+}   
 
 void Task::setState(TaskState state) {
     this -> state = state;
