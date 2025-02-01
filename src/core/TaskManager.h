@@ -1,3 +1,7 @@
+#ifndef SRC_CORE_TASK_MANAGER_H
+#define SRC_CORE_TASK_MANAGER_H
+
+
 # include <string> 
 # include <map>
 
@@ -17,7 +21,7 @@ class TaskManager {
 
 
         // a method to read the data from the file
-        void read() const ;
+        void read();
 
         // a method to persist the data to the file
         void persist() const;
@@ -31,4 +35,4 @@ class TaskManager {
         void run();
 };
 
-// TaskManager::defaultFileName{};
+#endif 

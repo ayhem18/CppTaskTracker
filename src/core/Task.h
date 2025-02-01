@@ -1,6 +1,5 @@
-#ifndef SRC_TASK_H
-#define SRC_TASK_H
-
+#ifndef SRC_CORE_TASK_H
+#define SRC_CORE_TASK_H
 
 # include <string>
 // time module in C++
@@ -17,7 +16,7 @@ enum TaskState {
 
 class Task {
     private: 
-        std::string taskId;
+        int taskId;
         std::string description;
         TaskState state;
         const time_t createdAt;
@@ -27,12 +26,12 @@ class Task {
         void updateCommon();
 
     public:
-        Task(const std::string & id, const std::string & desc): taskId{id}, description{desc}, state{Todo}, createdAt{time(nullptr)}, lastUpdated{time(nullptr)} {
+        Task(int id, const std::string & desc): taskId{id}, description{desc}, state{Todo}, createdAt{time(nullptr)}, lastUpdated{time(nullptr)} {
             // leaving the body empty because there is nothing else to set 
         };
 
         // getters
-        std::string getTaskID() const;
+        int getTaskID() const;
 
         std::string getDescription() const ;
 
@@ -43,7 +42,7 @@ class Task {
         TaskState getTaskState() const;
 
         // setters
-        void setId(const std::string& id);
+        void setId(int id);
 
         void setDescription(const std::string& description);
 

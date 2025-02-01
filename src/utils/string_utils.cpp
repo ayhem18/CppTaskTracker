@@ -1,8 +1,4 @@
-# include <string>
-# include <vector>
-
 # include "string_utils.h"
-
 
 std::vector<std::string> splitString(const std::string& str, const std::string& del) {
     // check https://cplusplus.com/reference/string/string/find/  
@@ -21,7 +17,7 @@ std::vector<std::string> splitString(const std::string& str, const std::string& 
     std::string strCopy = str;
     
     while (true) {
-        int delIndex{strCopy.find(del)};
+        std::size_t delIndex(strCopy.find(del));
 
         if (delIndex == std::string::npos) {
             // there are two cases: it either that strCopy is empty at this point of the program
@@ -37,10 +33,8 @@ std::vector<std::string> splitString(const std::string& str, const std::string& 
         tokens.push_back(strCopy.substr(0, delIndex));
 
         // truncate the first token + 
-        strCopy = strCopy.substr(0, delIndex + del.size());
+        strCopy = strCopy.substr(delIndex + del.size());
     }
 
     return tokens;
 }
-
-

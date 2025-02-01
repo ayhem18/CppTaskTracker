@@ -1,11 +1,21 @@
 # include <iostream>
+# include <string>
+# include <vector>
 
 # include "core/Task.cpp"
-# include "core/Task.h"
+# include "utils/string_utils.cpp"
 
 
 int main() {
-    // let's create a Task object
-    Task t = Task("first task", "some_task_description");
-    std::cout << t ;
+    std::string s1 = "aaa";
+
+    std::string del = "bb";
+
+    std::vector<std::string> tokens = splitString(s1, del);
+    
+    std::cout << "output start" << "\n";
+
+    for (std::string & s: tokens) {
+        std::cout << s << "\n";
+    }
 }

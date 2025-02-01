@@ -1,15 +1,10 @@
-# include "Task.h"
-# include <string>
-// time module in C++
-# include <ctime> 
-# include <iostream>
-
+# include "Task.h" // Task.h contains all other includes...
 
 void Task::updateCommon() {
     this -> lastUpdated = std::time(nullptr);  
 }
 
-void Task::setId (const std::string& id) {
+void Task::setId (int id) {
     this -> taskId = id;
     this -> updateCommon();
 }   
@@ -25,7 +20,7 @@ void Task::setDescription(const std::string& description) {
 }
 
 
-std::string Task::getTaskID() const { // the 'const' keyword here notifies the compile that this method does not modify the calling object; hence it can be called from constant types
+int Task::getTaskID() const { // the 'const' keyword here notifies the compile that this method does not modify the calling object; hence it can be called from constant types
     return this->taskId;
 }
 
