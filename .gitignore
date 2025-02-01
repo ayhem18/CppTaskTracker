@@ -1,0 +1,8 @@
+# the vscode settings
+.vscode
+
+# the binary files
+*.out 
+
+## ignore the build directory for now
+build/**
