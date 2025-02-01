@@ -1,4 +1,8 @@
 # include "string_utils.h"
+# include <algorithm>
+# include <cstring>
+# include <numeric>
+
 
 std::vector<std::string> splitString(const std::string& str, const std::string& del) {
     // check https://cplusplus.com/reference/string/string/find/  
@@ -37,4 +41,52 @@ std::vector<std::string> splitString(const std::string& str, const std::string& 
     }
 
     return tokens;
+}
+
+
+std::string toLowerCase(const std::string& s) {
+    std::string res = s;
+
+    for (char& c: res) {
+        c = tolower(c);
+    }
+    return res;
+}
+
+std::string toUpperCase(const std::string& s) {
+    std::string res = s;
+
+    for (char& c: res) {
+        c = toupper(c);
+    }
+    return res;
+}
+
+
+std::string join(const std::vector<std::string> & tokens, const std::string& delimiter) {
+    if (tokens.empty()) {
+        return "";
+    }
+
+    return std::accumulate(
+            std::next(tokens.begin()), 
+            tokens.end(), 
+            tokens[0], 
+            [delimiter](std::string a, std::string b) {
+                return a + delimiter + b;
+            }
+    );
+}
+
+std::string trim(const std::string& s) {
+    int start = 0;
+    int end = s.size() - 1;
+    // first the last occurrence of a white space starting from the beginning of the string
+    while (std::isspace(s[start])) {
+        start ++;
+    }
+    while (std::isspace(s[end])) {
+        end --;
+    }
+    return s.substr(start, end + 1);
 }

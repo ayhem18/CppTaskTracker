@@ -1,4 +1,5 @@
 # include "TaskSerializer.h"
+# include "Task.h"
 # include "../utils/string_utils.h"
 
 
@@ -43,4 +44,13 @@ std::vector<std::string> TaskSerializer::verify_string_representation(const std:
 
 
 
+void TaskSerializer::serializeTask(const Task& task) {
+    std::string idString = std::to_string(task.getTaskID());
 
+    std::string creationTime = std::to_string(task.getCreationTime());
+    std::string updateTime = std::to_string(task.getLastUpdateTime());
+
+    std::string state = getTaskStateString(task.getTaskState()); 
+    
+    
+}

@@ -1,5 +1,42 @@
 # include "Task.h" // Task.h contains all other includes...
+# include "../utils/string_utils.h"
 
+////////////////////////////////////////// TaskState //////////////////////////////////////////
+
+constexpr std::string getTaskStateString(TaskState state) {
+    switch (state)
+    {
+    case Todo: return "todo";
+    case InProgress:   return "inProgress";
+    case Completed: return "completed";
+    default:        throw std::invalid_argument("invalid value for a TaskState enum");
+    }
+}
+
+constexpr TaskState getTaskState(const std::string& str) {
+
+    const std::string& s = toLowerCase(str);
+
+    if (s == "todo") {
+        return Todo;
+    }
+
+    if (s == "inprogress") {
+        return InProgress;
+    }
+
+    if (s == "completed") {
+        return Completed;
+    }
+
+    throw std::invalid_argument("invalid value for a TaskState enum");
+}
+
+constexpr std::string getTaskState(TaskState state) {
+}
+
+
+////////////////////////////////////////// Task //////////////////////////////////////////
 void Task::updateCommon() {
     this -> lastUpdated = std::time(nullptr);  
 }

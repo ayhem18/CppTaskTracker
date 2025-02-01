@@ -5,6 +5,7 @@
 // time module in C++
 # include <ctime> 
 # include <iostream>
+# include <stdexcept>
 
 
 enum TaskState {
@@ -12,6 +13,11 @@ enum TaskState {
     InProgress,
     Completed
 };
+
+
+constexpr std::string getTaskStateString(TaskState state);
+
+constexpr TaskState getTaskState(const std::string& str);
 
 
 class Task {
