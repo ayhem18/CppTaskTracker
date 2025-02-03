@@ -8,11 +8,10 @@
 
 
 void f() {
-    for (int i = 0; i <= 10; i++) {
-        std::cout << generateRandomString(i) << "\n";
-    }
+    test_trim();
+    test_split();
+    test_join();
 }
-
 
 
 int main() {

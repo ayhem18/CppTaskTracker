@@ -36,8 +36,8 @@ std::vector<std::string> splitString(const std::string& str, const std::string& 
         // add the token
         tokens.push_back(strCopy.substr(0, delIndex));
 
-        // truncate the first token + 
-        strCopy = strCopy.substr(delIndex + del.size());
+        // truncate the first token + the length of the delimiter
+        strCopy = strCopy.substr(delIndex + del.length());
     }
 
     return tokens;
@@ -80,13 +80,14 @@ std::string join(const std::vector<std::string> & tokens, const std::string& del
 
 std::string trim(const std::string& s) {
     int start = 0;
-    int end = s.size() - 1;
+    int end = s.length() - 1; 
     // first the last occurrence of a white space starting from the beginning of the string
-    while (std::isspace(s[start])) {
+    while (std::isspace(s[start]) != 0) {
         start ++;
     }
-    while (std::isspace(s[end])) {
+    while (std::isspace(s[end]) != 0) {
         end --;
     }
-    return s.substr(start, end + 1);
+    std::string res = s.substr(start, end-start + 1);
+    return res;
 }
