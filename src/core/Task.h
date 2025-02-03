@@ -15,9 +15,9 @@ enum TaskState {
 };
 
 
-constexpr std::string getTaskStateString(TaskState state);
+std::string getTaskStateString(TaskState state);
 
-constexpr TaskState getTaskState(const std::string& str);
+TaskState getTaskState(const std::string& str);
 
 
 class Task {

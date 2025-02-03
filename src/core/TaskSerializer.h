@@ -12,7 +12,7 @@ class TaskSerializer {
         std::vector<std::string> verify_string_representation(const std::string& taskString);
 
     public:
-        void serializeTask(const Task& task);
+        std::string serializeTask(const Task& task);
         Task deserializeTask(const std::string taskStr);
 
 };

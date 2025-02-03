@@ -29,22 +29,25 @@ std::vector<std::string> TaskSerializer::verify_string_representation(const std:
         int creationTimeInt = std::stoi(tokens.at(3));  
 	}
     catch (std::invalid_argument) {
-		throw std::invalid_argument("the 4th token must represent a numerical value: creation time. Found: " + tokens.at(0));
+		throw std::invalid_argument("the 4th token must represent a numerical value: the creation time. Found: " + tokens.at(0));
 	}
 
     try {
         int lastUpdatedTimeInt = std::stoi(tokens.at(4));  
 	}
     catch (std::invalid_argument) {
-		throw std::invalid_argument("the 5h token must represent a numerical value: last update time " + tokens.at(0));
+		throw std::invalid_argument("the 5h token must represent a numerical value: the last update time " + tokens.at(0));
 	}
+
+    // make sure to 
+
 
     return tokens;
 }
 
 
 
-void TaskSerializer::serializeTask(const Task& task) {
+std::string TaskSerializer::serializeTask(const Task& task) {
     std::string idString = std::to_string(task.getTaskID());
 
     std::string creationTime = std::to_string(task.getCreationTime());
@@ -52,5 +55,9 @@ void TaskSerializer::serializeTask(const Task& task) {
 
     std::string state = getTaskStateString(task.getTaskState()); 
     
-    
+    // wrap up all the fields in a std::vector
+
+    std::vector<std::string> tokens {idString, task.getDescription(), state, creationTime, updateTime};
+
+    return join(tokens, " || ");
 }

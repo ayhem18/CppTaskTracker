@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////// TaskState //////////////////////////////////////////
 
-constexpr std::string getTaskStateString(TaskState state) {
+std::string getTaskStateString(TaskState state) {
     switch (state)
     {
     case Todo: return "todo";
@@ -13,9 +13,10 @@ constexpr std::string getTaskStateString(TaskState state) {
     }
 }
 
-constexpr TaskState getTaskState(const std::string& str) {
+TaskState getTaskState(const std::string& str) {
 
-    const std::string& s = toLowerCase(str);
+    const std::string& s = trim(toLowerCase(str));
+
 
     if (s == "todo") {
         return Todo;
@@ -25,14 +26,13 @@ constexpr TaskState getTaskState(const std::string& str) {
         return InProgress;
     }
 
-    if (s == "completed") {
-        return Completed;
+
+    if (s != "completed") {
+        throw std::invalid_argument("invalid value for a TaskState enum");
     }
 
-    throw std::invalid_argument("invalid value for a TaskState enum");
-}
+    return Completed;
 
-constexpr std::string getTaskState(TaskState state) {
 }
 
 
