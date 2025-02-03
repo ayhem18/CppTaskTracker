@@ -7,6 +7,7 @@
 # include <iostream>
 # include <stdexcept>
 
+////////////////////////////////////////// TaskState //////////////////////////////////////////
 
 enum TaskState {
     Todo,
@@ -20,12 +21,14 @@ std::string getTaskStateString(TaskState state);
 TaskState getTaskState(const std::string& str);
 
 
+////////////////////////////////////////// Task //////////////////////////////////////////
+
 class Task {
     private: 
         int taskId;
         std::string description;
         TaskState state;
-        const time_t createdAt;
+        time_t createdAt; // algthou initially set as a const, the fact that Tasks will be serialized made me remove the const keyword
         time_t lastUpdated;
 
         // a method to save the logic bits common across all update methods 
@@ -53,9 +56,30 @@ class Task {
         void setDescription(const std::string& description);
 
         void setState(TaskState state);
+
+        // since the TaskSerializer should have access to the creation time field of the Task class 
+        // without publicly exposing the field with a setter, make the TaskSerializer a friend class of the Task class.
+        friend class TaskSerializer;
+
 };
 
 
 std::ostream& operator << (std::ostream& out, const Task& task);
+
+
+////////////////////////////////////////// TaskSerializer //////////////////////////////////////////
+
+
+class TaskSerializer {
+    private:
+        std::vector<std::string> verify_string_representation(const std::string& taskString);
+
+    public:
+        std::string serializeTask(const Task& task);
+        Task deserializeTask(const std::string taskStr);
+
+};
+
+
 
 #endif 

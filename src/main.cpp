@@ -6,6 +6,7 @@
 # include "utils/string_utils.cpp"
 # include "tests.cpp"
 
+#include <unistd.h>
 
 void f() {
     test_trim();
@@ -15,18 +16,19 @@ void f() {
 
 
 int main() {
-    f();
-    // std::string s1 = "aaa";
+    // f();
+    Task t = Task(1, "description");
 
-    // std::string del = "bb";
+    std::cout << t << "\n";
 
-    // std::cout << s1 << "\n";
- 
-    // std::vector<std::string> tokens = splitString(s1, del);
-    
-    // std::cout << "output start" << "\n";
+    TaskSerializer ser = TaskSerializer();
 
-    // for (std::string & s: tokens) {
-    //     std::cout << s << "\n";
-    // }
+    std::cout << ser.serializeTask(t) << "\n";
+
+    // sleep for 5 seconds to see the difference in the serialization (hopefully)
+    sleep(10);
+
+    t.setState(InProgress);
+
+    std::cout << ser.serializeTask(t) << "\n";
 }
