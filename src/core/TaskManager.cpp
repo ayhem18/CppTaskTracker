@@ -17,11 +17,36 @@ void TaskManager::read(){
 
 }
 
-void TaskManager::run() {
-    // 1. open the file
 
-    // update the first block: the number of tasks ever created 
+vt TaskManager::listTasks() const { 
+    // start by the toDo tasks
+    vt toDoTasks = listTasks("todo");
 
-    // rewrite the rest of the file: serialize each task    
+    // then the inProgress tasks
+    vt inProgressTasks = listTasks("inProgress");
 
+    // then the done tasks
+    vt doneTasks = listTasks("done");    
+
+    // append all of them together
+    vt allTasks = toDoTasks;
+    allTasks.insert(allTasks.end(), inProgressTasks.begin(), inProgressTasks.end());
+    allTasks.insert(allTasks.end(), doneTasks.begin(), doneTasks.end());
+
+    return allTasks;
+}   
+
+vt TaskManager::listTasks(const std::string& state) const {
+}
+
+Task TaskManager::addTask(const std::string& description) const {
+}
+
+Task TaskManager::deleteTask(const int& id) const {
+}
+
+Task TaskManager::updateTask(const int& id, const std::string& description) const {
+}
+
+Task TaskManager::updateTask(const int& id, const std::string& state) const {
 }

@@ -4,9 +4,13 @@
 
 # include <string> 
 # include <map>
+# include <set>
 
 # include "Task.h"
 
+
+// define an alias for std::vector<Task>
+using vt = std::vector<Task>;
 
 
 class TaskManager { 
@@ -20,6 +24,10 @@ class TaskManager {
         // the actual in-memory storage
         std::map<int, Task> taskData;        
 
+        // have a set of each state that saves the ids of all tasks in that state
+        std::set<int> todoIds;
+        std::set<int> inProgressIds;
+        std::set<int> doneIds;
 
         // a method to read the data from the file
         void read();
@@ -28,15 +36,33 @@ class TaskManager {
         void persist() const;
 
     public:
-        TaskManager(const std::string& path): filePath{path}, taskData{}, serializer{} {
+        TaskManager(const std::string& path): filePath{path}, taskData{}, serializer{}, 
+                todoIds{}, inProgressIds{}, doneIds{} {
+            // populate the map and sets with the data from the file
             read();
         }
 
-        // start with listing properties
+        // LIST METHODS
 
+        // list all tasks
+        vt listTasks() const; 
 
+        // list all tasks with a given state
+        vt listTasks(const std::string& state) const;
 
-        void run();
+        // ADD METHODS
+
+        Task addTask(const std::string& description) const;  
+
+        // DELETE METHODS
+
+        Task deleteTask(const int& id) const;
+
+        // UPDATE METHODS
+        Task updateTask(const int& id, const std::string& description) const;
+
+        Task updateTask(const int& id, const std::string& state) const;
+
 };
 
 #endif 

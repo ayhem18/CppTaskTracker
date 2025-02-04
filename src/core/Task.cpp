@@ -86,6 +86,8 @@ std::ostream& operator << (std::ostream& out, const Task& task) {
 }
 
 
+
+
 ////////////////////////////////////////// Task Serializer //////////////////////////////////////////
 
 std::vector<std::string> TaskSerializer::verify_string_representation(const std::string& taskString) {

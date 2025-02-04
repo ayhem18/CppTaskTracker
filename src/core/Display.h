@@ -10,7 +10,6 @@ class Display {
 
     vec_str longElementRepresentation(const std::string& str);
 
-
     vec_str elementRepresentation(const std::string& str);
 
 
