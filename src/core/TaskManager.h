@@ -7,6 +7,8 @@
 
 # include "Task.h"
 
+
+
 class TaskManager { 
     private:
         // the path where the file will be saved
@@ -15,7 +17,7 @@ class TaskManager {
         // a serializer object to write in and read data from files 
         TaskSerializer serializer;
 
-        // the actual in-memory storage where 
+        // the actual in-memory storage
         std::map<int, Task> taskData;        
 
 
@@ -26,10 +28,13 @@ class TaskManager {
         void persist() const;
 
     public:
-        // static std::string inline defaultFileName {"database.json"};
-        TaskManager(const std::string& path): filePath{path}, taskData{}, serializer(){
+        TaskManager(const std::string& path): filePath{path}, taskData{}, serializer{} {
             read();
         }
+
+        // start with listing properties
+
+
 
         void run();
 };

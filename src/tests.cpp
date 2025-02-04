@@ -50,29 +50,29 @@ void test_trim() {
 
 void test_split() {
     std::string s1 = "I am a piece of text";
-    std::vector<std::string> v1 {"I", "am", "a", "piece", "of", "text"};
+    vec_str v1 {"I", "am", "a", "piece", "of", "text"};
     assert(v1 == splitString(s1, " ") && "assert fails with simple case");
 
     std::string s2 = "bbbabbaaab";
-    std::vector<std::string> v2 {"bbb", "bb", "", "", "b"};
+    vec_str v2 {"bbb", "bb", "", "", "b"};
     assert(v2 == splitString(s2, "a") && "assert fails with empty tokens");
 
     std::string s3 = "aabaab";
-    std::vector<std::string> v3 {"aa", "aa"};
+    vec_str v3 {"aa", "aa"};
     assert(v3 == splitString(s3, "b") && "assert fails when string ends with the delimiter");
 }
 
 
 void test_join() {
-    std::vector<std::string> v1 {"a", "b", "c", "d"};
+    vec_str v1 {"a", "b", "c", "d"};
     std::string s1 {"a_b_c_d"};
     assert (s1 == join(v1, "_") && "join fails with basic cases");
 
-    std::vector<std::string> v2 {"a", "b", "c", "d"};
+    vec_str v2 {"a", "b", "c", "d"};
     std::string s2 {"a__b__c__d"};
     assert (s2 == join(v2, "__") && "join fails with basic cases");
 
-    std::vector<std::string> v3 {"a"};
+    vec_str v3 {"a"};
     std::string s3 {"a"};
     assert (s3 == join(v3, "__") && "join fails with basic cases");
 }

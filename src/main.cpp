@@ -8,7 +8,8 @@
 
 #include <unistd.h>
 
-int main() {
+
+void fun() {
     Task t = Task(1, "description");
 
     std::cout << t << "\n";
@@ -30,5 +31,11 @@ int main() {
     Task newTask{ser.deserializeTask(taskRep)};
 
     std::cout << std::boolalpha << (t == newTask) << "\n";
+
+}
+
+
+
+int main() {
 
 }

@@ -1,23 +1,20 @@
 # include "string_utils.h"
-# include <algorithm>
-# include <cstring>
-# include <numeric>
 
 
-std::vector<std::string> splitString(const std::string& str, const std::string& del) {
+vec_str splitString(const std::string& str, const std::string& del) {
     // check https://cplusplus.com/reference/string/string/find/  
 
     // first step: check if the delimiter exists in the given string
     if (str.find(del) == std::string::npos) {
         // make sure not to return a list whose only element in an empty list
         if (str == "") {
-            return std::vector<std::string>{};
+            return vec_str{};
         }
         
-        return std::vector<std::string>(1, str); // a vector with the original string as the only element
+        return vec_str(1, str); // a vector with the original string as the only element
     }
     
-    std::vector<std::string> tokens{};
+    vec_str tokens{};
     std::string strCopy = str;
     
     while (true) {
@@ -63,7 +60,7 @@ std::string toUpperCase(const std::string& s) {
 }
 
 
-std::string join(const std::vector<std::string> & tokens, const std::string& delimiter) {
+std::string join(const vec_str & tokens, const std::string& delimiter) {
     if (tokens.empty()) {
         return "";
     }
@@ -90,4 +87,24 @@ std::string trim(const std::string& s) {
     }
     std::string res = s.substr(start, end-start + 1);
     return res;
+}
+
+
+std::string completeWhiteSpace(const std::string& s, int length) {
+    if (s.length() >= length) {
+        return s;
+    }
+
+    int diff = length - s.length();
+
+    // compute the number of white spaces on each side
+
+    int leftSpaces = static_cast<int> (std::floor(diff / 2));
+    int rightSpaces = static_cast<int> (std::ceil(diff / 2));
+
+    // just to make sure everything is correct (for now)
+    assert (leftSpaces + rightSpaces + s.length() == length && "make sure the final length is correct");    
+
+    return std::string(leftSpaces, ' ') + s + std::string(rightSpaces, ' ');
+
 }

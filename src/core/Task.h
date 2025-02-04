@@ -7,6 +7,8 @@
 # include <iostream>
 # include <stdexcept>
 # include <chrono>
+
+
 ////////////////////////////////////////// TaskState //////////////////////////////////////////
 
 enum TaskState {
@@ -77,8 +79,6 @@ class Task {
         // without publicly exposing the field with a setter, make the TaskSerializer a friend class of the Task class.
         friend class TaskSerializer;
 
-
-
 };
 
 
@@ -97,6 +97,7 @@ class TaskSerializer {
         Task deserializeTask(const std::string taskStr);
 
 };
+
 
 
 
