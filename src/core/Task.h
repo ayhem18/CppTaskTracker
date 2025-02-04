@@ -90,11 +90,11 @@ std::ostream& operator << (std::ostream& out, const Task& task);
 
 class TaskSerializer {
     private:
-        std::vector<std::string> verify_string_representation(const std::string& taskString);
+        std::vector<std::string> verify_string_representation(const std::string& taskString) const ;
 
     public:
-        std::string serializeTask(const Task& task);
-        Task deserializeTask(const std::string taskStr);
+        std::string serializeTask(const Task& task) const ;
+        Task deserializeTask(const std::string taskStr) const ;
 
 };
 

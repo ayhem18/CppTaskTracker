@@ -90,7 +90,7 @@ std::ostream& operator << (std::ostream& out, const Task& task) {
 
 ////////////////////////////////////////// Task Serializer //////////////////////////////////////////
 
-std::vector<std::string> TaskSerializer::verify_string_representation(const std::string& taskString) {
+std::vector<std::string> TaskSerializer::verify_string_representation(const std::string& taskString) const {
     const std::string& delimiter = "||"; 
     
     std::vector<std::string> tokens = splitString(taskString, delimiter);
@@ -137,7 +137,7 @@ std::vector<std::string> TaskSerializer::verify_string_representation(const std:
     return tokens;
 }
 
-Task TaskSerializer::deserializeTask(const std::string taskStr) {
+Task TaskSerializer::deserializeTask(const std::string taskStr) const {
     // extract the tokens after format verification
     std::vector<std::string> tokens = this -> verify_string_representation(taskStr);
 
@@ -163,7 +163,7 @@ Task TaskSerializer::deserializeTask(const std::string taskStr) {
 
 
 
-std::string TaskSerializer::serializeTask(const Task& task) {
+std::string TaskSerializer::serializeTask(const Task& task) const{
     std::string idString = std::to_string(task.getTaskID());
 
     std::string creationTime = std::to_string(task.getCreationTime());

@@ -85,7 +85,7 @@ std::string Display::lineRepresentation(const vec_str& elements) {
 
     for (int i = 0; i < maxLength; i ++ ) {
     
-        // the ith displayed line is the result of extracting the i-th element each 
+        // the ith displayed line is the result of extracting the i-th element from each of the vectors in elementLines
         vec_str ithLine = std::accumulate(elementLines.begin(), elementLines.end(), vec_str(), 
                 [i](vec_str e) {
                     return e.size() > i ? e[i] : " ";

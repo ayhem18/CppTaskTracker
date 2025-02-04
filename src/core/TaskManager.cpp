@@ -1,32 +1,59 @@
 # include "TaskManager.h"
+# include <fstream>
 
-void TaskManager::persist() const{
-    // 1. open the file
+void TaskManager::persist() const {
+    // 1. open the file     
+    std::ofstream file(this -> filePath);
 
-    // update the first block: the number of tasks ever created 
-
-    // rewrite the rest of the file: serialize each task    
-
+    // 2. write the number of tasks ever created
+    file << this -> lastId << "\n";
+    
+    // 3. serialize each task
+    for (const std::pair<int, Task>& p : this -> taskData) {    
+        file << this -> serializer.serializeTask(p.second) << "\n";
+    }
 }
 
 void TaskManager::read(){
-    // 1. open the file
+    // // define the delimiter
+    // std::string delimiter = "\n" + serializationDelimiter + "\n";
 
-    // update the first block: the number of tasks ever created 
-    // rewrite the rest of the file: serialize each task   
+    // read the file line by line
+    std::ifstream file(this -> filePath);
+    
+    std::string line;
+    
+    std::getline(file, line);
 
+    // set the value of the lastId field
+    this -> lastId = std::stoi(line);
+
+    // for the rest of the file, each line represents a task        
+    // read it, serialize it
+    // determine its state and add its id to the corresponding set   
+    while (std::getline(file, line)) {  
+        Task serializedTask = this -> serializer.deserializeTask(line); 
+        int taskId = serializedTask.getTaskID(); 
+        TaskState taskState = serializedTask.getTaskState();
+
+        // add the task to the taskData map
+        this -> taskData[taskId] = serializedTask;
+
+        // add the task id to the corresponding set
+        this -> stateToIds[taskState].insert(taskId);
+    }
 }
 
 
 vt TaskManager::listTasks() const { 
     // start by the toDo tasks
-    vt toDoTasks = listTasks("todo");
+    vt toDoTasks = listTasks(TaskState::Todo);
 
     // then the inProgress tasks
-    vt inProgressTasks = listTasks("inProgress");
+    vt inProgressTasks = listTasks(TaskState::InProgress);
 
     // then the done tasks
-    vt doneTasks = listTasks("done");    
+    vt doneTasks = listTasks(TaskState::Completed);    
 
     // append all of them together
     vt allTasks = toDoTasks;
@@ -36,17 +63,79 @@ vt TaskManager::listTasks() const {
     return allTasks;
 }   
 
-vt TaskManager::listTasks(const std::string& state) const {
+vt TaskManager::listTasks(const TaskState& state) const {   
+    // get the ids of the tasks with the given state
+    std::set<int> idsByState = this -> stateToIds.at(state);
+    // get the tasks from the taskData map
+
+    vt resultTasks;
+
+    for (int id : idsByState) {
+        // add the task corresponding to the task
+        resultTasks.push_back(this -> taskData.at(id));
+    }   
+
+    return resultTasks;
 }
 
-Task TaskManager::addTask(const std::string& description) const {
+Task TaskManager::addTask(const std::string& description) {
+    // the idea is very simple
+    // 1. increment the lastID field
+    this -> lastId = this -> lastId + 1;
+
+    // 2. create a new task with the given description and the new id
+    Task newTask = Task(this -> lastId, description);
+    
+    // 3. add the new task to the taskData map
+    this -> taskData.at(this -> lastId) = newTask;
+    // 4. add the new task to the corresponding set: the toDo set (new tasks are always assigned the ToDo state) 
+    this -> stateToIds.at(TaskState::Todo).insert(this -> lastId);
+    
+    // 5. return the new task
+    return newTask;
 }
 
-Task TaskManager::deleteTask(const int& id) const {
+Task TaskManager::deleteTask(const int& id) {
+    // 1. check if the given id exists in the taskData map 
+    if (! this -> taskData.contains(id)) {
+        throw std::invalid_argument("The given id does not exist");
+    }
+    
+    // 2. get the task to be deleted
+    Task taskToBeDeleted = this -> taskData.at(id);
+
+    // 3. remove the task from the taskData map
+    this -> taskData.erase(id);
+
+    // 4. remove the task from the corresponding set
+    this -> stateToIds.at(taskToBeDeleted.getTaskState()).erase(id);
+
+    // 5. return the deleted task
+    return taskToBeDeleted;
+}
+        
+Task TaskManager::updateTask(const int& id, const std::string& description) {
+    // 1. check if the given id exists in the taskData map 
+    if (! this -> taskData.contains(id)) {
+        throw std::invalid_argument("The given id does not exist");
+    }
+    
+    // simple update the description of the task
+    this -> taskData.at(id).setDescription(description);
+
+    // return the updated task
+    return this -> taskData.at(id);
 }
 
-Task TaskManager::updateTask(const int& id, const std::string& description) const {
-}
+Task TaskManager::updateTask(const int& id, const TaskState& state) {
+    // 1. check if the given id exists in the taskData map 
+    if (! this -> taskData.contains(id)) {
+        throw std::invalid_argument("The given id does not exist");
+    }
 
-Task TaskManager::updateTask(const int& id, const std::string& state) const {
+    // set the state of the task
+    this -> taskData.at(id).setState(state);
+
+    // return the updated task
+    return this -> taskData.at(id); 
 }
