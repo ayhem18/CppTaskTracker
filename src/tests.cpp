@@ -76,3 +76,10 @@ void test_join() {
     std::string s3 {"a"};
     assert (s3 == join(v3, "__") && "join fails with basic cases");
 }
+
+
+void run_string_tests() {
+    test_trim();
+    test_split();
+    test_join();
+}

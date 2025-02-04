@@ -39,8 +39,8 @@ TaskState getTaskState(const std::string& str) {
 ////////////////////////////////////////// Task //////////////////////////////////////////
 
 void Task::updateCommon() {
-
-    this -> lastUpdated = std::time(nullptr);  
+    // this -> last_updated = system_clock::now();
+    this -> lastUpdated = time(nullptr);  
 }
 
 void Task::setId (int id) {

@@ -8,15 +8,7 @@
 
 #include <unistd.h>
 
-void f() {
-    test_trim();
-    test_split();
-    test_join();
-}
-
-
 int main() {
-    // f();
     Task t = Task(1, "description");
 
     std::cout << t << "\n";
@@ -26,9 +18,17 @@ int main() {
     std::cout << ser.serializeTask(t) << "\n";
 
     // sleep for 5 seconds to see the difference in the serialization (hopefully)
-    sleep(10);
+
+    sleep(5);
 
     t.setState(InProgress);
 
-    std::cout << ser.serializeTask(t) << "\n";
+    std::string taskRep = ser.serializeTask(t);
+
+    std::cout << taskRep << "\n";
+
+    Task newTask{ser.deserializeTask(taskRep)};
+
+    std::cout << std::boolalpha << (t == newTask) << "\n";
+
 }

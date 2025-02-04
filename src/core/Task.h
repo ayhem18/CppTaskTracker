@@ -6,7 +6,7 @@
 # include <ctime> 
 # include <iostream>
 # include <stdexcept>
-
+# include <chrono>
 ////////////////////////////////////////// TaskState //////////////////////////////////////////
 
 enum TaskState {
@@ -23,11 +23,17 @@ TaskState getTaskState(const std::string& str);
 
 ////////////////////////////////////////// Task //////////////////////////////////////////
 
+using namespace std::chrono; // the classes are already nested enough even when adding this statement
+
 class Task {
     private: 
         int taskId;
         std::string description;
         TaskState state;
+
+        // system_clock::time_point created_at;
+        // system_clock::time_point last_p;
+
         time_t createdAt; // algthou initially set as a const, the fact that Tasks will be serialized made me remove the const keyword
         time_t lastUpdated;
 
@@ -57,9 +63,21 @@ class Task {
 
         void setState(TaskState state);
 
+        // override the equal operator
+        bool operator == (const Task& anotherTask) {            
+            return (anotherTask.taskId == this -> taskId) && 
+                (anotherTask.createdAt == this -> createdAt) && 
+                (anotherTask.description == this -> description) && 
+                (anotherTask.lastUpdated == this -> lastUpdated) && 
+                (anotherTask.state == this -> state) 
+                ;
+        } 
+
         // since the TaskSerializer should have access to the creation time field of the Task class 
         // without publicly exposing the field with a setter, make the TaskSerializer a friend class of the Task class.
         friend class TaskSerializer;
+
+
 
 };
 
