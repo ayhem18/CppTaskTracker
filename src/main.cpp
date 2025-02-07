@@ -30,9 +30,11 @@ void run_tests() {
     // runTaskTests();
     // std::cout << "Running task manager tests" << std::endl;
     runTaskManagerTests();
-}   
+    std::cout << "tests passed !!" << "\n";
+}  
 
 
 int main() {
     run_tests();
+
 }

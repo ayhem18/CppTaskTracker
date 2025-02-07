@@ -95,18 +95,19 @@ vt TaskManager::listTasks(const TaskState& state) const {
 }
 
 Task TaskManager::addTask(const std::string& description) {
-    // the idea is very simple
-    // 1. increment the lastID field
+
+    // 1. create a new task with the given description and the new id
+    Task newTask = Task(this -> lastId, description);
+
+    // 2. add the new task to the taskData map    
+    this -> taskData.insert({this -> lastId, newTask});
+
+    // 3. add the new task to the corresponding set: the toDo set (new tasks are always assigned the ToDo state) 
+    this -> stateToIds.at(TaskState::Todo).insert(this -> lastId);
+
+    // 4. increment the lastId field
     this -> lastId = this -> lastId + 1;
 
-    // 2. create a new task with the given description and the new id
-    Task newTask = Task(this -> lastId, description);
-    
-    // 3. add the new task to the taskData map
-    this -> taskData.at(this -> lastId) = newTask;
-    // 4. add the new task to the corresponding set: the toDo set (new tasks are always assigned the ToDo state) 
-    this -> stateToIds.at(TaskState::Todo).insert(this -> lastId);
-    
     // 5. return the new task
     return newTask;
 }
@@ -149,8 +150,21 @@ Task TaskManager::updateTask(const int& id, const TaskState& state) {
         throw std::invalid_argument("The given id does not exist");
     }
 
+    if (this -> taskData.at(id).getTaskState() == state) {
+        return this -> taskData.at(id);
+    }
+
+    TaskState oldState = this -> taskData.at(id).getTaskState(); 
+
+    // remove the task from the set corresponding to the old state
+    this -> stateToIds.at(oldState).erase(id); 
+
+
     // set the state of the task
     this -> taskData.at(id).setState(state);
+
+    // add the task to the set corresponding to the new state
+    this -> stateToIds.at(state).insert(id);
 
     // return the updated task
     return this -> taskData.at(id); 
