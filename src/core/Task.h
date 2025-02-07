@@ -44,7 +44,10 @@ class Task {
 
     public:
         Task(int id, const std::string & desc): taskId{id}, description{desc}, state{Todo}, createdAt{time(nullptr)}, lastUpdated{time(nullptr)} {
-            // leaving the body empty because there is nothing else to set 
+            // just to make sure the creation time and the last update time are the same
+            time_t now = time(nullptr); 
+            createdAt = now;
+            lastUpdated = now;  
         };
 
         // getters
@@ -64,6 +67,8 @@ class Task {
         void setDescription(const std::string& description);
 
         void setState(TaskState state);
+
+        std::string to_string() const;
 
         // override the equal operator
         bool operator == (const Task& anotherTask) {            

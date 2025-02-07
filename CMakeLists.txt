@@ -13,6 +13,15 @@ add_executable(TaskTrackerCpp
             src/utils/string_utils.h
             src/utils/string_utils.cpp
             
+            src/utils/random_utils.h
+            src/utils/random_utils.cpp
+
             src/tests/string_tests.h
             src/tests/string_tests.cpp
+
+            src/tests/task_tests.h
+            src/tests/task_tests.cpp
+        
+
+
             )

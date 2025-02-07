@@ -79,9 +79,15 @@ TaskState Task::getTaskState() const {
     return this -> state;
 }
 
+std::string Task::to_string() const {
+    std::string rep = "Task (" + std::to_string(this -> getTaskID()) + ")" + " description: " + this -> getDescription() + ": " + getTaskStateString(this -> getTaskState()) 
+    + " created at: " + std::to_string(this -> getCreationTime());
+    return rep;
+}
 
-std::ostream& operator << (std::ostream& out, const Task& task) {
-    out << "Task (" << task.getTaskID() << ")" << "description: " <<  task.getDescription() << " created at: " << task.getCreationTime() << "\n"; 
+
+std::ostream& operator << (std::ostream& out, const Task& task){
+    out << task.to_string() << "\n"; 
     return out;
 }
 

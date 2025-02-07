@@ -10,18 +10,7 @@
 # include <chrono>
 #include <cassert> // for the assert function
 # include "../utils/string_utils.h"
-
-const std::string& CHARACTERS
-    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv"
-        "wxyz0123456789";
-
-const std::string& ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-
-const std::string& DELIMITERS = ".,!?:;";
-
-int getRandomNumber(int low, int high);
-
-std::string generateRandomString(int length, const std::string& characters);
+# include "../utils/random_utils.h"
 
 void test_trim();
 

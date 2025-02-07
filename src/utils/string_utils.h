@@ -10,6 +10,15 @@
 # include <cassert>
 
 
+const std::string& CHARACTERS
+    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv"
+        "wxyz0123456789";
+
+const std::string& ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
+const std::string& DELIMITERS = ".,!?:;";
+
+
 using vec_str = std::vector<std::string>;
 
 vec_str splitString(const std::string& str, const std::string& del);

@@ -1,13 +1,13 @@
 # include <string>
 # include <iostream>
 # include <vector>
+# include <unistd.h>
 
 # include "core/Task.cpp"
 # include "utils/string_utils.cpp"
+# include "utils/random_utils.cpp"
 # include "tests/string_tests.cpp"
-
-#include <unistd.h>
-
+# include "tests/task_tests.cpp"
 
 void fun() {
     Task t = Task(1, "description");
@@ -20,8 +20,8 @@ void fun() {
 
     // sleep for 5 seconds to see the difference in the serialization (hopefully)
 
-    sleep(5);
 
+    sleep(5);
     t.setState(InProgress);
 
     std::string taskRep = ser.serializeTask(t);
@@ -37,7 +37,10 @@ void fun() {
 
 void run_tests() {
     run_string_tests();
+    runTaskTests();
 }
+
+
 
 
 int main() {
