@@ -4,7 +4,7 @@
 
 # include "core/Task.cpp"
 # include "utils/string_utils.cpp"
-# include "tests.cpp"
+# include "tests/string_tests.cpp"
 
 #include <unistd.h>
 
@@ -35,7 +35,11 @@ void fun() {
 }
 
 
+void run_tests() {
+    run_string_tests();
+}
+
 
 int main() {
-
+    run_tests();
 }

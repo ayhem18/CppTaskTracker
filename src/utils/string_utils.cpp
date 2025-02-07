@@ -98,13 +98,10 @@ std::string completeWhiteSpace(const std::string& s, int length) {
     int diff = length - s.length();
 
     // compute the number of white spaces on each side
-
-    int leftSpaces = static_cast<int> (std::floor(diff / 2));
-    int rightSpaces = static_cast<int> (std::ceil(diff / 2));
-
+    int leftSpaces = diff / 2; // integer division
+    int rightSpaces = diff - leftSpaces; 
     // just to make sure everything is correct (for now)
     assert (leftSpaces + rightSpaces + s.length() == length && "make sure the final length is correct");    
 
     return std::string(leftSpaces, ' ') + s + std::string(rightSpaces, ' ');
-
 }
