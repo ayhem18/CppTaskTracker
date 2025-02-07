@@ -50,6 +50,7 @@ std::string toLowerCase(const std::string& s) {
     return res;
 }
 
+
 std::string toUpperCase(const std::string& s) {
     std::string res = s;
 
@@ -74,6 +75,7 @@ std::string join(const vec_str & tokens, const std::string& delimiter) {
             }
     );
 }
+
 
 std::string trim(const std::string& s) {
     int start = 0;
@@ -104,4 +106,21 @@ std::string completeWhiteSpace(const std::string& s, int length) {
     assert (leftSpaces + rightSpaces + s.length() == length && "make sure the final length is correct");    
 
     return std::string(leftSpaces, ' ') + s + std::string(rightSpaces, ' ');
+}
+
+
+bool endsWith(const std::string& str, const std::string& suffix) {
+    if (str.length() < suffix.length()) {
+        return false;
+    }
+
+    int i1 = suffix.length() - 1;
+    int i2 = str.length() - 1;
+
+    while ((i1 >= 0) && (str[i2] == suffix[i1])) {
+        i1 --;
+        i2 --;
+    }
+
+    return i1 == -1;
 }

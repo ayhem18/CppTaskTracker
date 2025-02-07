@@ -9,7 +9,8 @@ void TaskManager::persist() const {
     file << this -> lastId << "\n";
     
     // 3. serialize each task
-    for (const std::pair<int, Task>& p : this -> taskData) {    
+
+    for (const  auto& p : this -> taskData) {
         file << this -> serializer.serializeTask(p.second) << "\n";
     }
 }
@@ -20,27 +21,38 @@ void TaskManager::read(){
 
     // read the file line by line
     std::ifstream file(this -> filePath);
-    
+
+    // check if the file is empty    
+    if (file.peek() == std::ifstream::traits_type::eof()) {
+        throw std::invalid_argument("The file is empty");
+    }
+
     std::string line;
-    
+
     std::getline(file, line);
 
-    // set the value of the lastId field
-    this -> lastId = std::stoi(line);
+    // make sure the first line is an integer
+    try {
+        this -> lastId = std::stoi(line);
+    } catch (const std::invalid_argument& e) {
+        throw std::invalid_argument("The first line of the file must be an integer: the total number of tasks ever created");
+    }
 
     // for the rest of the file, each line represents a task        
     // read it, serialize it
     // determine its state and add its id to the corresponding set   
+
     while (std::getline(file, line)) {  
-        Task serializedTask = this -> serializer.deserializeTask(line); 
+        Task serializedTask = (this -> serializer).deserializeTask(line); 
+
         int taskId = serializedTask.getTaskID(); 
         TaskState taskState = serializedTask.getTaskState();
 
         // add the task to the taskData map
-        this -> taskData[taskId] = serializedTask;
+        (this -> taskData).insert({taskId, serializedTask});
 
-        // add the task id to the corresponding set
-        this -> stateToIds[taskState].insert(taskId);
+        // // add the task id to the corresponding set
+        (this -> stateToIds[taskState]).insert(taskId);
     }
 }
 
@@ -97,7 +109,7 @@ Task TaskManager::addTask(const std::string& description) {
 
 Task TaskManager::deleteTask(const int& id) {
     // 1. check if the given id exists in the taskData map 
-    if (! this -> taskData.contains(id)) {
+    if (this -> taskData.find(id) == this -> taskData.end()) {
         throw std::invalid_argument("The given id does not exist");
     }
     
@@ -116,7 +128,7 @@ Task TaskManager::deleteTask(const int& id) {
         
 Task TaskManager::updateTask(const int& id, const std::string& description) {
     // 1. check if the given id exists in the taskData map 
-    if (! this -> taskData.contains(id)) {
+    if (this -> taskData.find(id) == this -> taskData.end()) {
         throw std::invalid_argument("The given id does not exist");
     }
     
@@ -129,7 +141,7 @@ Task TaskManager::updateTask(const int& id, const std::string& description) {
 
 Task TaskManager::updateTask(const int& id, const TaskState& state) {
     // 1. check if the given id exists in the taskData map 
-    if (! this -> taskData.contains(id)) {
+    if (this -> taskData.find(id) == this -> taskData.end()) {
         throw std::invalid_argument("The given id does not exist");
     }
 
@@ -139,3 +151,8 @@ Task TaskManager::updateTask(const int& id, const TaskState& state) {
     // return the updated task
     return this -> taskData.at(id); 
 }
+
+
+int TaskManager::getLastId() const {
+    return this -> lastId;
+}   

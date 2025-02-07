@@ -67,21 +67,22 @@ class TaskManager {
         // list all tasks
         vt listTasks() const; 
 
-        vt listTasks(const TaskState& state) const;
         // list all tasks with a given state
+        vt listTasks(const TaskState& state) const;
 
         // ADD METHODS
-
         Task addTask(const std::string& description);  
 
         // DELETE METHODS
-
         Task deleteTask(const int& id);
 
         // UPDATE METHODS
         Task updateTask(const int& id, const std::string& description) ;
 
         Task updateTask(const int& id, const TaskState& state) ;
+
+        // GETTERS 
+        int getLastId() const; 
 };
 
 #endif 

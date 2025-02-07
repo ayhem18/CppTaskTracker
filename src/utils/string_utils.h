@@ -33,5 +33,7 @@ std::string trim(const std::string& s);
 
 std::string completeWhiteSpace(const std::string& s, int length);
 
+bool endsWith(const std::string& str, const std::string& suffix);
+
 #endif 
 

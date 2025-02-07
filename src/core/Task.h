@@ -71,7 +71,7 @@ class Task {
         std::string to_string() const;
 
         // override the equal operator
-        bool operator == (const Task& anotherTask) {            
+        bool operator == (const Task& anotherTask) const {            
             return (anotherTask.taskId == this -> taskId) && 
                 (anotherTask.createdAt == this -> createdAt) && 
                 (anotherTask.description == this -> description) && 

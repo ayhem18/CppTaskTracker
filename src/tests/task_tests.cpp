@@ -66,7 +66,7 @@ void testTaskSerialization() {
 
         Task t2 = ser.deserializeTask(serialized);
 
-        assert(t == t2 && "assert fails with either serialization or deserialization");
+        assert(t2 == t && "assert fails with either serialization or deserialization");
     }
 }
 
@@ -76,5 +76,4 @@ void runTaskTests() {
     testTaskSetters(); 
     testTaskSerialization();
 }
-
 

@@ -9,7 +9,10 @@ add_executable(TaskTrackerCpp
             
             src/core/Task.cpp 
             src/core/Task.h            
-            
+
+            src/core/TaskManager.cpp
+            src/core/TaskManager.h
+
             src/utils/string_utils.h
             src/utils/string_utils.cpp
             
@@ -22,6 +25,6 @@ add_executable(TaskTrackerCpp
             src/tests/task_tests.h
             src/tests/task_tests.cpp
         
-
-
-            )
+            src/tests/taskManager_tests.h
+            src/tests/taskManager_tests.cpp
+)

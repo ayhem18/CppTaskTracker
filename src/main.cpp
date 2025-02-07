@@ -4,43 +4,32 @@
 # include <unistd.h>
 
 # include "core/Task.cpp"
+# include "core/TaskManager.cpp"
+
 # include "utils/string_utils.cpp"
 # include "utils/random_utils.cpp"
 # include "tests/string_tests.cpp"
 # include "tests/task_tests.cpp"
+# include "tests/taskManager_tests.cpp"
+
+
+// # include "tests/taskManager_tests.h"
+// # include "tests/task_tests.h"
+// # include "tests/string_tests.h"
 
 void fun() {
-    Task t = Task(1, "description");
-
-    std::cout << t << "\n";
-
-    TaskSerializer ser = TaskSerializer();
-
-    std::cout << ser.serializeTask(t) << "\n";
-
-    // sleep for 5 seconds to see the difference in the serialization (hopefully)
-
-
-    sleep(5);
-    t.setState(InProgress);
-
-    std::string taskRep = ser.serializeTask(t);
-
-    std::cout << taskRep << "\n";
-
-    Task newTask{ser.deserializeTask(taskRep)};
-
-    std::cout << std::boolalpha << (t == newTask) << "\n";
 
 }
 
 
 void run_tests() {
+    std::cout << "Running string tests" << std::endl;
     run_string_tests();
-    runTaskTests();
-}
-
-
+    std::cout << "Running task tests" << std::endl;
+    // runTaskTests();
+    // std::cout << "Running task manager tests" << std::endl;
+    runTaskManagerTests();
+}   
 
 
 int main() {
