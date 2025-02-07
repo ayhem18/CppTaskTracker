@@ -23,6 +23,10 @@ void TaskManager::read(){
     std::ifstream file(this -> filePath);
 
     // check if the file is empty    
+    if (file.fail()) {
+        throw std::invalid_argument("The file does not exist");
+    }
+
     if (file.peek() == std::ifstream::traits_type::eof()) {
         throw std::invalid_argument("The file is empty");
     }
