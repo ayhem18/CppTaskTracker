@@ -332,7 +332,6 @@ void testTaskManagerUpdate() {
 
     std::string content = join(lines, "\n");
 
-
     fs::path path = fs::current_path().append("tests/fileSamples/sample5.txt");
 
     std::string filePath = createTempTxtFile(path.string(), content);
@@ -399,18 +398,52 @@ void testTaskManagerUpdate() {
             assert(m.listTasks(TaskState::InProgress).size() == 9 - i); // inProgress loses an element each time (starting from 10)
             assert(m.listTasks(TaskState::Completed).size() == 6 + i); // completed gains an element each time (starting from 5 )
         }
-
     }
 }
 
 
+void testTaskManagerDelete() {
+    // read the file 
+    std::pair<std::pair<vt, vec_str>, std::vector<time_t>> pair = getGoodTasks(); 
 
+    vt tasks = pair.first.first;
+    vec_str lines = pair.first.second;
+
+    std::string content = join(lines, "\n");
+
+    fs::path path = fs::current_path().append("tests/fileSamples/sample5.txt");
+
+    std::string filePath = createTempTxtFile(path.string(), content);
+
+    TaskManager m {filePath}; 
+
+    for (int i = 0; i < 5; i ++ ) {
+        m.deleteTask(i);
+        assert(m.listTasks().size() == 14 - i);
+        assert(m.listTasks(TaskState::Todo).size() == 4 - i);
+    }
+
+    for (int i = 0; i < 5; i ++ ) {
+        m.deleteTask(5 + i);
+        assert(m.listTasks().size() == 9 - i);
+        assert(m.listTasks(TaskState::InProgress).size() == 4 - i);
+    }
+
+    for (int i = 0; i < 5; i ++ ) {
+        m.deleteTask(10 + i);
+        assert(m.listTasks().size() == 4 - i);
+        assert(m.listTasks(TaskState::Completed).size() == 4 - i);
+    }
+
+}
 
 
 void runTaskManagerTests() {
     testTaskManagerReadFiles1();
     testTaskManagerReadFiles2();
     testTaskManagerReadPersist();
+
     testTaskManagerAdd();
-    testTaskManagerUpdate();
+    testTaskManagerUpdate();   
+    testTaskManagerDelete();
 }

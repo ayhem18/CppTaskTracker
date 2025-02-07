@@ -57,6 +57,14 @@ class TaskManager {
             read();
         }
 
+        TaskManager(): filePath{}, taskData{}, serializer{}, 
+                todoIds{}, inProgressIds{}, doneIds{}, stateToIds{}, lastId{0} {
+            // populate the map                
+            stateToIds[TaskState::Todo] = todoIds;
+            stateToIds[TaskState::InProgress] = inProgressIds;
+            stateToIds[TaskState::Completed] = doneIds;
+        }   
+
         // Destructor to persist data before destruction
         ~TaskManager() {
             persist(); // Call the persist method

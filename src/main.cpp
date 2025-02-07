@@ -26,15 +26,17 @@ void fun() {
 void run_tests() {
     std::cout << "Running string tests" << std::endl;
     run_string_tests();
+
     std::cout << "Running task tests" << std::endl;
-    // runTaskTests();
-    // std::cout << "Running task manager tests" << std::endl;
+    runTaskTests();
+
+    std::cout << "Running task manager tests" << std::endl;
     runTaskManagerTests();
-    std::cout << "tests passed !!" << "\n";
+
+    std::cout << "All tests passed !!" << "\n";
 }  
 
 
-int main() {
-    run_tests();
-
+int main(int argc, char* argv[]) {
+    
 }
