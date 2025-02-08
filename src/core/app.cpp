@@ -1,56 +1,221 @@
 # include "app.h"
 
-vec_str App::verifyListInput(const vec_str& input) {
-    std::string command = toLowerCase(trim(input[0]));
+//////////////////////////////////////////// input processing functions ////////////////////////////////////////////
+
+vec_str App::verifyListInput(const vec_str& input) const {
+    // every input passed to this function has at least 2 arguments
+    // first check the command !!
+
+    std::string command = toLowerCase(trim(input[1]));
 
     if (command != "list") {
-        return vec_str();
+        throw InvalidCommandException("Invalid command");
     }
 
-    // either list all of list by state
-    if (input.size() > 2) {
-        return vec_str();
+
+    if ((input.size() != 2) && (input.size() != 3)) {
+        throw InvalidFormatException("List command requires 1 or 2 arguments");
     }
-    
-    if (input.size() == 1) {
+
+    // the input can have at most 3 arguments: fileName, command, state    
+    if (input.size() == 2) {
         return vec_str{command};
     }
 
-    // this function automatically checks if the string is a valid state
-    getTaskState(input[1]);
+    try {
+        getTaskState(input[2]);
+    } catch (const std::exception& e) {
+        throw InvalidSemanticsException(input[2] + " is not a valid task state.");
+    }
 
-    return vec_str{command, input[1]};
+    return vec_str{command, trim(input[2])};
 }    
 
 
-vec_str App::verifyAddInput(const vec_str& input) {
-    
+vec_str App::verifyAddInput(const vec_str& input) const {
+    std::string command = toLowerCase(trim(input[1]));
+
+    if (command != "add") {
+        throw InvalidCommandException("Invalid command");
+    }
+
+    // the add task expects 2 arguments: fileName, add command, task description
+    if (input.size() != 3) {
+        throw InvalidFormatException("the Add command requires 2 arguments");
+    }
+
+    return vec_str{command, trim(input[2])};
 }       
 
-vec_str App::verifyUpdateInput(const vec_str& input) {
 
-    if (input.size() != 2) {
-        throw std::invalid_argument("Invalid input");
+vec_str App::verifyUpdateInput(const vec_str& input) const {
+    // start with the command
+
+    std::string command = toLowerCase(trim(input[1]));
+
+    if (command != "add") {
+        throw InvalidCommandException("Invalid command");
     }
 
-    std::string id = toLowerCase(trim(input[0]));
-    
+    if (input.size() != 4) {
+        throw InvalidFormatException("the Update command requires 3 arguments: update taskId (taskState / description)");
+    }
+
+    // task id is an integer 
+    try {
+        std::stoi(input[2]);
+    } catch (const std::exception& e) {
+        throw InvalidSemanticsException("Keep in mind that task ids are integers ))");
+    }
+
+    return vec_str{command, trim(input[2]), trim(input[3])};
 }   
 
-vec_str App::verifyDeleteInput(const vec_str& input) {
-    if (input.size() != 1) {
-        throw std::invalid_argument("Invalid input");
+
+vec_str App::verifyDeleteInput(const vec_str& input) const {
+    std::string command = toLowerCase(trim(input[1]));
+
+    if (command != "delete") {
+        throw InvalidCommandException("Invalid command");
     }
+
+    if (input.size() != 3) {
+        throw InvalidFormatException("the delete command is of the format: delete taskId");
+    }
+
+    // make sure the taskId is an integer   
+    try {
+        std::stoi(input[2]);
+    } catch (const std::exception& e) {
+        throw InvalidSemanticsException("Keep in mind that task ids are integers ))");
+    }
+
+    return input;
 }
 
 
-
-
-
-
-void App::processInput(const vec_str& input) {  
-    
-    if (input[0] == "list") {
-        vec_str verifiedInput = verifyListInput(input);
+void App::verifyCommonFormat(const vec_str& input) const {
+    if (input.size() <= 1 || input.size() > 4) {
+        throw InvalidGeneralInputException ("TaskTracker expects between 1 and 3 arguments");
     }
-}           
+
+    // might add other general checks afterward
+}
+
+
+vec_str App::processInput(const vec_str& input) const {  
+    try {   
+        verifyCommonFormat(input);
+
+        // Vector of verification functions
+        std::vector<std::function<vec_str(const vec_str&)>> verifiers = {
+            [this](const vec_str& i) { return verifyListInput(i); },
+            [this](const vec_str& i) { return verifyAddInput(i); },
+            [this](const vec_str& i) { return verifyUpdateInput(i); },
+            [this](const vec_str& i) { return verifyDeleteInput(i); }
+        };
+
+        // Try each verifier until one succeeds
+        for (const auto& verifier : verifiers) {
+            try {
+                vec_str verifiedInput = verifier(input);
+                return verifiedInput;
+            }
+            catch (const InvalidCommandException& e) {
+                continue; // consider the next command
+            }
+            catch (const InvalidFormatException& e) {
+                // the command is valid but the format isn't; throw the error again !!
+                throw e;
+            } 
+            catch (const InvalidSemanticsException& e) {
+                // the command is valid but the semantics aren't; throw the error again !!
+                throw e;
+            }
+        }
+        
+        // at this point, we know the command cannot be processed by the application
+        throw InvalidCommandException("The passed command is not valid");
+
+    } 
+    // at this point, the exact class of the exception does not matter. Catch it and print the error message
+    // the usefulness of the message is guaranteed by the inner objects / functions. 
+    catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
+
+}            
+
+//////////////////////////////////////////// command execution functions ////////////////////////////////////////////
+
+vec_str App::getTaskRepresentation(const Task& task) const {
+    // get the creation time and last update time in human readable format
+    // get the task id, description and state   
+
+    std::string taskId = std::to_string(task.getTaskID());
+    std::string description = task.getDescription();
+    std::string state = getTaskStateString(task.getTaskState());
+
+    std::string creationTime = this -> display.getFormattedTime(task.getCreationTime());
+    std::string lastUpdateTime = this -> display.getFormattedTime(task.getLastUpdateTime());
+
+    return vec_str{taskId, description, state, creationTime, lastUpdateTime};
+}
+
+
+void App::runAddCommand(const vec_str& input) {
+    // the input is verified
+    std::string description = input[2]; 
+    Task newTask = this -> manager.addTask(description); 
+
+    std::cout << "New Task added successfully" << std::endl; 
+
+    this -> display.displayLine(this -> getTaskRepresentation(newTask)); 
+}
+
+
+void App::runUpdateCommand(const vec_str& input) {
+    // get the task id and the new description
+    int taskId = std::stoi(input[2]);
+    std::string arg = input[3];
+    
+    // in the update command: updating the state is prioritized over updating the description 
+    // so first check if the new state is valid
+    
+    try {
+        TaskState newState = getTaskState(arg);
+        this -> manager.updateTask(taskId, newState);
+
+    } catch (const std::invalid_argument& e) {
+        // the new state is not valid; so the new description is valid
+        // so update the description
+        this -> manager.updateTask(taskId, arg);    
+    }
+
+    std::cout << "Task updated successfully" << std::endl;
+    this -> display.displayLine(this -> getTaskRepresentation(this -> manager.getTask(taskId)));
+}       
+
+void App::runDeleteCommand(const vec_str& input) {
+
+}
+
+
+void App::runListCommand(const vec_str& input) {
+
+} 
+
+
+void App::runExitCommand(const vec_str& input) {
+
+}
+
+
+void App::runCommand(const vec_str& input) {
+    vec_str verifiedInput = processInput(input);
+
+
+
+    // now that we have the verified input, we can run the command
+    
+}

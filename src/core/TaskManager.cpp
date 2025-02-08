@@ -174,3 +174,12 @@ Task TaskManager::updateTask(const int& id, const TaskState& state) {
 int TaskManager::getLastId() const {
     return this -> lastId;
 }   
+
+
+Task TaskManager::getTask(const int& id) const {
+    return this -> taskData.at(id);
+}   
+
+
+
+    

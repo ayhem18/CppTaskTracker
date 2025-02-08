@@ -91,6 +91,9 @@ class TaskManager {
 
         // GETTERS 
         int getLastId() const; 
+        
+        Task getTask(const int& id) const;
+
 };
 
 #endif 

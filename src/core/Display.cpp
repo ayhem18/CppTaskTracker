@@ -1,6 +1,6 @@
 # include "Display.h"
 
-vec_str Display::longElementRepresentation(const std::string& str) {
+vec_str Display::longElementRepresentation(const std::string& str) const {
     std::string strCopy {str};
 
     vec_str res {};
@@ -23,7 +23,7 @@ vec_str Display::longElementRepresentation(const std::string& str) {
 }
 
 
-vec_str Display::elementRepresentation(const std::string& str) {
+vec_str Display::elementRepresentation(const std::string& str) const {
     // step1: split a string using spaces
     vec_str tokens {splitString(str, " ")};
 
@@ -68,7 +68,7 @@ vec_str Display::elementRepresentation(const std::string& str) {
 }
 
 
-std::string Display::lineRepresentation(const vec_str& elements) {
+std::string Display::displayLine(const vec_str& elements) const {
     // step1: prepare the lines for each element
     std::vector<vec_str> elementLines {};
     for (const std::string& e: elements) {
@@ -95,4 +95,12 @@ std::string Display::lineRepresentation(const vec_str& elements) {
     }
 
     return join(displayLines, "\n");    
+}
+
+
+std::string Display::getFormattedTime(const time_t& time) const {
+    std::tm* tm = std::localtime(&time);
+    char buffer[80];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm);
+    return std::string(buffer); 
 }

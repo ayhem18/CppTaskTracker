@@ -1,4 +1,5 @@
 # include<string>
+# include <ctime>
 # include "../utils/string_utils.h"
 
 
@@ -8,9 +9,9 @@ class Display {
         int elementsByLine;
         std::string delimiter;
 
-    vec_str longElementRepresentation(const std::string& str);
+    vec_str longElementRepresentation(const std::string& str) const ;
 
-    vec_str elementRepresentation(const std::string& str);
+    vec_str elementRepresentation(const std::string& str) const ;
 
 
     public:
@@ -18,6 +19,9 @@ class Display {
             
         };
 
-    std::string lineRepresentation(const vec_str& elements);
+    std::string displayLine(const vec_str& elements) const ;
+
+    std::string getFormattedTime(const time_t& time) const;
+            
 
 };
