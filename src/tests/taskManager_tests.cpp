@@ -95,8 +95,8 @@ std::pair<std::pair<vt, vec_str>, std::vector<time_t>> getGoodTasks() {
     TaskSerializer ser = TaskSerializer();
 
     vec_str lines {"15"}; // the first line
-
     for (Task t : tasks) {
+
         lines.push_back(ser.serializeTask(t));
     }
 

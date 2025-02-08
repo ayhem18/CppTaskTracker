@@ -53,7 +53,7 @@ vec_str App::verifyUpdateInput(const vec_str& input) const {
 
     std::string command = toLowerCase(trim(input[1]));
 
-    if (command != "add") {
+    if (command != "update") {
         throw InvalidCommandException("Invalid command");
     }
 
@@ -144,6 +144,8 @@ vec_str App::processInput(const vec_str& input) const {
         std::cout << e.what() << std::endl;
     }
 
+    // added to quiet the compiler
+    return vec_str();
 }            
 
 //////////////////////////////////////////// command execution functions ////////////////////////////////////////////
@@ -180,42 +182,92 @@ void App::runUpdateCommand(const vec_str& input) {
     std::string arg = input[3];
     
     // in the update command: updating the state is prioritized over updating the description 
-    // so first check if the new state is valid
+    // so check if the last argument is a valid state
     
     try {
-        TaskState newState = getTaskState(arg);
-        this -> manager.updateTask(taskId, newState);
+        try {
+            TaskState newState = getTaskState(arg);
+            this -> manager.updateTask(taskId, newState);
 
-    } catch (const std::invalid_argument& e) {
-        // the new state is not valid; so the new description is valid
-        // so update the description
-        this -> manager.updateTask(taskId, arg);    
+        } catch (const std::invalid_argument& e) {
+            // the new state is not valid; so the new description is valid
+            // so update the description
+            this -> manager.updateTask(taskId, arg);    
+        }
+
+    } catch (const  std::invalid_argument& e) {
+        throw InvalidCommandException(e.what());
     }
 
     std::cout << "Task updated successfully" << std::endl;
     this -> display.displayLine(this -> getTaskRepresentation(this -> manager.getTask(taskId)));
 }       
 
-void App::runDeleteCommand(const vec_str& input) {
 
+void App::runDeleteCommand(const vec_str& input) {
+    int taskId = std::stoi(input[2]);
+    Task deletedTask = this -> manager.getTask(taskId);
+    
+    try {
+        this -> manager.deleteTask(taskId);
+    } catch (const std::invalid_argument& e) {
+        throw InvalidSemanticsException(e.what());
+    }
+
+    std::cout << "Task deleted successfully" << std::endl;
+    this -> display.displayLine(this -> getTaskRepresentation(deletedTask));
 }
 
 
 void App::runListCommand(const vec_str& input) {
+    // get the state from the input
+    vt tasks;
 
+    if (input.size() == 2) {
+        // list all tasks
+        tasks = this -> manager.listTasks();
+    }
+    else {
+        tasks = this -> manager.listTasks(getTaskState(input[2]));
+    }
+    
+    if (tasks.empty()) {
+        std:: cout << "No Tasks added yet " << std::endl;
+        return;
+    }
+    
+    vec_str header = {"ID", "Description", "State", "Creation Time", "Last Update Time"}; 
+    this -> display.displayLine(header);
+
+    // build a vector of task representations   
+    for (const auto& task : tasks) {
+        this -> display.displayLine(this -> getTaskRepresentation(task));
+    }
 } 
 
 
 void App::runExitCommand(const vec_str& input) {
-
+    std::cout << "Exiting the program" << std::endl;
+    exit(0);
 }
 
 
 void App::runCommand(const vec_str& input) {
     vec_str verifiedInput = processInput(input);
 
+    // Create command map that associates command strings with member functions
+    std::map<std::string, std::function<void(const vec_str&)>> commandMap = {
+        {"list", [this](const vec_str& i) { runListCommand(i); }},
+        {"add", [this](const vec_str& i) { runAddCommand(i); }},
+        {"update", [this](const vec_str& i) { runUpdateCommand(i); }},
+        {"delete", [this](const vec_str& i) { runDeleteCommand(i); }},
+        {"exit", [this](const vec_str& i) { runExitCommand(i); }}
+    };
 
-
-    // now that we have the verified input, we can run the command
-    
+    // call the corresponding function
+    try {
+        commandMap[verifiedInput[0]](verifiedInput);
+    } catch (const InvalidSemanticsException& e) {
+        std::cout << e.what() << std::endl;
+    }
 }

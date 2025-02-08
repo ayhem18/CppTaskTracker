@@ -5,6 +5,10 @@
  * @date 2025-02-07
  */
 
+
+#ifndef SRC_TESTS_TASK_TESTS_H
+#define SRC_TESTS_TASK_TESTS_H
+
 # include <cassert>
 # include <unistd.h> // for the sleep function
 
@@ -16,3 +20,5 @@ void test_Task_serialization();
 void testTaskSetters();
 
 void runTaskTests();
+
+#endif 

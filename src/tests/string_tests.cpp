@@ -108,7 +108,7 @@ void test_complete_white_space() {
 }
 
 
-void run_string_tests() {
+void runStringTests() {
     test_trim();
     test_split();
     test_join();

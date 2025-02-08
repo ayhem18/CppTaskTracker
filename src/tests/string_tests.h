@@ -5,10 +5,15 @@
  * @date 2025-02-03
  */
 
+
+#ifndef SRC_TESTS_STRING_TESTS_H
+#define SRC_TESTS_STRING_TESTS_H
+
 # include <string>
 # include <cstdlib>
 # include <chrono>
-#include <cassert> // for the assert function
+# include <cassert> // for the assert function
+
 # include "../utils/string_utils.h"
 # include "../utils/random_utils.h"
 
@@ -18,4 +23,6 @@ void test_split();
 
 void test_join();   
 
-void run_string_tests();
+void runStringTests();
+
+#endif 

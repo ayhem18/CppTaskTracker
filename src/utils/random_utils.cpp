@@ -1,15 +1,15 @@
 # include "random_utils.h"
 
-int getRandomNumber(int low, int high) {
-    // the following seed is copied from: 
-    // https://www.geeksforgeeks.org/random-header-c-set-1generators/ 
-    
+int getRandomNumber(int low, int high) {    
     high = std::max(low, high);
     low = std::min(low, high);
 
     if (high == low) {
         throw std::invalid_argument("high and low are equal");
     }
+
+    // the following seed is copied from: 
+    // https://www.geeksforgeeks.org/random-header-c-set-1generators/
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     srand(seed); // different seed every time this function is called

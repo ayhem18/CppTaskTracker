@@ -65,6 +65,10 @@ vec_str Display::elementRepresentation(const std::string& str) const {
             }
         }
     }
+
+    lines.push_back(line);
+
+    return lines;   
 }
 
 

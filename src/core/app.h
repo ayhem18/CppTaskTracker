@@ -1,7 +1,5 @@
-# include "TaskManager.h"   
-# include "Task.h"
-# include "Display.h"
-# include "../utils/string_utils.h"
+#ifndef SRC_CORE_APP_H
+#define SRC_CORE_APP_H
 
 
 # include <filesystem>
@@ -10,6 +8,10 @@
 # include <vector>
 # include <functional>
 
+
+# include "TaskManager.h"   
+# include "Display.h"
+# include "../utils/string_utils.h"
 
 
 // here is the exception handling flow: 
@@ -66,6 +68,8 @@ class App {
         void verifyCommonFormat(const vec_str& input) const;
 
 
+        vec_str getTaskRepresentation(const Task& task) const;
+
         void runAddCommand(const vec_str& input);
 
         void runUpdateCommand(const vec_str& input);
@@ -76,11 +80,10 @@ class App {
 
         void runExitCommand(const vec_str& input);
 
-        vec_str getTaskRepresentation(const Task& task) const;
 
         // static inline std::string defaultFileName {(fs::current_path().append("data.txt")).string()};
     public: 
-        App(const std::string& filePath): manager{filePath}, display{16, 5, " | "} {
+        App(const std::string& filePath): manager{filePath}, display{25, 5, " | "} {
             
         }
 
@@ -90,3 +93,4 @@ class App {
 };
 
 
+#endif 

@@ -1,3 +1,6 @@
+#ifndef SRC_TESTS_TASKMANAGER_TESTS_H
+#define SRC_TESTS_TASKMANAGER_TESTS_H
+
 # include <fstream>
 # include <cassert>
 # include <filesystem>
@@ -12,3 +15,4 @@ void testTaskManagerReadFiles();
 
 void runTaskManagerTests();
 
+#endif 
