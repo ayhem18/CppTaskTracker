@@ -1,9 +1,9 @@
-#ifndef SRC_CORE_DISPLAY_H
-#define SRC_CORE_DISPLAY_H
+# pragma once
+
 
 # include <string>
 # include <ctime>
-# include "../utils/string_utils.h"
+# include "string_utils.h"
 
 
 class Display {
@@ -28,6 +28,3 @@ class Display {
             
 
 };
-
-
-#endif 

@@ -1,5 +1,4 @@
-#ifndef SRC_UTILS_RANDOM_UTILS_H
-#define SRC_UTILS_RANDOM_UTILS_H    
+# pragma once
 
 # include <string>
 # include <cstdlib>
@@ -11,5 +10,3 @@
 int getRandomNumber(int low, int high);
 
 std::string generateRandomString(int length, const std::string& characters);
-
-#endif 

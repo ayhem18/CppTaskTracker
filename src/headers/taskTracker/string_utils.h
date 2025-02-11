@@ -1,5 +1,4 @@
-#ifndef SRC_UTILS_STRING_UTILS_H
-#define SRC_UTILS_STRING_UTILS_H
+# pragma once
 
 # include <string>
 # include <vector>
@@ -8,7 +7,6 @@
 # include <numeric>
 # include <cmath> // used for floor and ceil functions
 # include <cassert>
-
 
 const std::string& CHARACTERS
     = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv"
@@ -34,6 +32,3 @@ std::string trim(const std::string& s);
 std::string completeWhiteSpace(const std::string& s, int length);
 
 bool endsWith(const std::string& str, const std::string& suffix);
-
-#endif 
-

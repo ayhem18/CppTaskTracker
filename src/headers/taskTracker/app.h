@@ -1,6 +1,4 @@
-#ifndef SRC_CORE_APP_H
-#define SRC_CORE_APP_H
-
+# pragma once
 
 # include <filesystem>
 # include <stdexcept>
@@ -11,7 +9,7 @@
 
 # include "TaskManager.h"   
 # include "Display.h"
-# include "../utils/string_utils.h"
+# include "string_utils.h"
 
 
 // here is the exception handling flow: 
@@ -92,5 +90,3 @@ class App {
         void runCommand(const vec_str& input);
 };
 
-
-#endif 

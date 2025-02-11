@@ -1,6 +1,4 @@
-#ifndef SRC_CORE_TASK_MANAGER_H
-#define SRC_CORE_TASK_MANAGER_H
-
+# pragma once  
 
 # include <string> 
 # include <map>
@@ -95,5 +93,3 @@ class TaskManager {
         Task getTask(const int& id) const;
 
 };
-
-#endif 

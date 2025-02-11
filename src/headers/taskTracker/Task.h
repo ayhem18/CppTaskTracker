@@ -1,5 +1,4 @@
-#ifndef SRC_CORE_TASK_H
-#define SRC_CORE_TASK_H
+# pragma once 
 
 # include <string>
 // time module in C++
@@ -10,7 +9,7 @@
 # include <vector>
 
 
-# include "../utils/string_utils.h"
+# include "string_utils.h"
 ////////////////////////////////////////// TaskState //////////////////////////////////////////
 
 enum TaskState {
@@ -105,5 +104,3 @@ class TaskSerializer {
 
 };
 
-
-#endif 
