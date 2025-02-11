@@ -5,6 +5,7 @@
 # include <iostream>
 # include <vector>
 # include <functional>
+# include <fstream>
 
 
 # include "TaskManager.h"   
@@ -49,6 +50,7 @@ public:
         : std::runtime_error(message) {}
 };  
 
+namespace fs = std::filesystem;
 
 class App {
     private:
@@ -82,7 +84,15 @@ class App {
         // static inline std::string defaultFileName {(fs::current_path().append("data.txt")).string()};
     public: 
         App(const std::string& filePath): manager{filePath}, display{25, 5, " | "} {
-            
+            // Create the file if it doesn't exist
+            std::ofstream file(filePath, std::ios::app);
+            if (!file.is_open()) {
+                throw std::runtime_error("Could not create or open file: " + filePath);
+            }
+            file.close(); 
+
+            // call the task manager to read the data from the file
+            manager.read();
         }
 
         vec_str processInput(const vec_str& input) const;

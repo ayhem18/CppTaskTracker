@@ -1,4 +1,15 @@
-# include "string_utils.h"
+# include "../headers/taskTracker/string_utils.h"
+
+
+
+namespace string_utils {
+    const std::string CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv"
+            "wxyz0123456789";
+
+    const std::string ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+
+    const std::string DELIMITERS = ".,!?:;";
+}
 
 
 vec_str splitString(const std::string& str, const std::string& del) {

@@ -1,4 +1,4 @@
-# include "Display.h"
+# include "../headers/taskTracker/Display.h"
 
 vec_str Display::longElementRepresentation(const std::string& str) const {
     std::string strCopy {str};

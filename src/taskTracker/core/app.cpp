@@ -1,5 +1,4 @@
-# include "app.h"
-
+# include "../headers/taskTracker/app.h"
 //////////////////////////////////////////// input processing functions ////////////////////////////////////////////
 
 vec_str App::verifyListInput(const vec_str& input) const {

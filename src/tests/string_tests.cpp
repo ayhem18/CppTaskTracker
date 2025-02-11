@@ -5,11 +5,12 @@
  * @date 2025-02-03
  */
 
-# include "string_tests.h"
+# include "../headers/tests/string_tests.h"
+
 
 void test_trim() {
     for (int i = 1; i <= 1000; i++) {
-        std::string s = generateRandomString(i, CHARACTERS);
+        std::string s = generateRandomString(i, string_utils::CHARACTERS);
         // add random whitespaces before and after the original string
         assert(trim(s) == s && "The trim function should return the same string for a string with no trailing whitespaces");
 
@@ -62,7 +63,7 @@ void test_join_and_split() {
         vec_str tokens(n); // generate a vector with 'n' elements 
 
         for (std::string& t : tokens) {
-            t = generateRandomString(getRandomNumber(2, 10), ALPHABET);
+            t = generateRandomString(getRandomNumber(2, 10), string_utils::ALPHABET);
         }
         
         // join the tokens with a non-alphanumeric character
@@ -70,7 +71,7 @@ void test_join_and_split() {
         int delimiter_length = getRandomNumber(1, 5);
 
         // generate a random delimiter with the length specified above
-        std::string delimiter = generateRandomString(delimiter_length, DELIMITERS);
+        std::string delimiter = generateRandomString(delimiter_length, string_utils::DELIMITERS);
 
         // join the tokens with the delimiter
         std::string s = join(tokens, delimiter);
@@ -91,7 +92,7 @@ void test_complete_white_space() {
         int n_less = getRandomNumber(1, n - 1);
 
         // generate a random string with n characters
-        std::string s = generateRandomString(n, ALPHABET);
+        std::string s = generateRandomString(n, string_utils::ALPHABET);
         std::string s_greater = completeWhiteSpace(s, n_greater);
         std::string s_less = completeWhiteSpace(s, n_less);
 

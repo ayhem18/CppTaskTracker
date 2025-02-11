@@ -1,8 +1,8 @@
-# include "task_tests.h"
+# include "../headers/tests/task_tests.h"
 
 void test_Task_initialization() {
     for (int i = 0; i < 1000; i++) {
-        std::string desc = generateRandomString(getRandomNumber(2, 100), ALPHABET);
+        std::string desc = generateRandomString(getRandomNumber(2, 100), string_utils::ALPHABET);
         
         int taskId = getRandomNumber(1, 1000);
         Task t = Task(taskId, desc);
@@ -18,7 +18,7 @@ void test_Task_initialization() {
 void testTaskSetters() {
     // this test might run for around a minute or so 
     for (int i = 0; i < 10; i++) {
-        std::string desc = generateRandomString(getRandomNumber(2, 100), ALPHABET);
+        std::string desc = generateRandomString(getRandomNumber(2, 100), string_utils::ALPHABET);
         
         int taskId = getRandomNumber(1, 1000);
         Task t = Task(taskId, desc);
@@ -39,7 +39,7 @@ void testTaskSetters() {
         assert(abs(diff - sleepTime) < 0.1 && "the last update time must be close to the sleep time");
 
         // test the setDescription method
-        std::string newDesc = generateRandomString(getRandomNumber(2, 100), ALPHABET);
+        std::string newDesc = generateRandomString(getRandomNumber(2, 100), string_utils::ALPHABET);
 
         // sleep again
         int sleepTime2 = getRandomNumber(1, 5); 
@@ -56,7 +56,7 @@ void testTaskSetters() {
 
 void testTaskSerialization() {
     for (int i = 0; i < 100; i++) {
-        std::string desc = generateRandomString(getRandomNumber(2, 100), CHARACTERS);
+        std::string desc = generateRandomString(getRandomNumber(2, 100), string_utils::CHARACTERS);
         int taskId = getRandomNumber(1, 1000);
         Task t = Task(taskId, desc);
 

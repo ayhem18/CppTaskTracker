@@ -37,9 +37,6 @@ class TaskManager {
         std::map<TaskState, std::set<int>> stateToIds;
 
 
-        // a method to read the data from the file
-        void read();
-
         // a method to persist the data to the file
         void persist() const;
 
@@ -90,6 +87,9 @@ class TaskManager {
         // GETTERS 
         int getLastId() const; 
         
-        Task getTask(const int& id) const;
+        Task getTask(const int& id) const; 
+
+        // a method to read the data from the file
+        void read();
 
 };

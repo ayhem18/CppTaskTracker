@@ -1,5 +1,5 @@
 # include <fstream>
-# include "TaskManager.h"
+# include "../headers/taskTracker/TaskManager.h"
 
 void TaskManager::persist() const {
     // 1. open the file     
@@ -16,17 +16,15 @@ void TaskManager::persist() const {
 }
 
 void TaskManager::read(){
-    // // define the delimiter
-    // std::string delimiter = "\n" + serializationDelimiter + "\n";
-
     // read the file line by line
     std::ifstream file(this -> filePath);
 
-    // check if the file is empty    
-    if (file.fail()) {
+    // check if the file exists
+    if (!file.is_open()) {
         throw std::invalid_argument("The file does not exist");
     }
 
+    // check if the file is empty    
     if (file.peek() == std::ifstream::traits_type::eof()) {
         throw std::invalid_argument("The file is empty");
     }

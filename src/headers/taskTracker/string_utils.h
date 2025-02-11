@@ -8,13 +8,15 @@
 # include <cmath> // used for floor and ceil functions
 # include <cassert>
 
-const std::string& CHARACTERS
-    = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuv"
-        "wxyz0123456789";
 
-const std::string& ALPHABET = "abcdefghijklmnopqrstuvwxyz";
+// it is very possible that these constants below where defined in the standard library
+// which would break the build
 
-const std::string& DELIMITERS = ".,!?:;";
+namespace string_utils {
+    extern const std::string CHARACTERS;
+    extern const std::string ALPHABET;
+    extern const std::string DELIMITERS;
+}
 
 
 using vec_str = std::vector<std::string>;

@@ -6,3 +6,6 @@
 
 ## ignore the build directory for now
 build/**
+
+## do not track the executable file
+src/taskCLi 

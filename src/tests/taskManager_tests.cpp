@@ -1,5 +1,4 @@
-# include "taskManager_tests.h"
-
+# include "../headers/tests/taskManager_tests.h"
 
 // utility functions to work with files
 

@@ -10,16 +10,24 @@ set(CMAKE_CXX_STANDARD 20)
 
 # start by adding a library 
 
+add_library(taskTrackerLibrary 
 
-add_executable(TaskTrackerCpp 
-        src/utils/string_utils.cpp
-        src/utils/random_utils.cpp
-        src/core/Task.cpp
-        src/core/TaskManager.cpp
-        src/core/Display.cpp
-        src/core/app.cpp
-        src/main.cpp
-        )
+        src/taskTracker/utils/string_utils.cpp
+        src/taskTracker/utils/random_utils.cpp
+        src/taskTracker/core/Task.cpp
+        src/taskTracker/core/TaskManager.cpp
+        src/taskTracker/core/Display.cpp
+        src/taskTracker/core/app.cpp) 
+
+target_include_directories(taskTrackerLibrary PRIVATE src/headers) 
 
 
-target_include_directories(TaskTrackerCpp PRIVATE src/core src/utils src/tests)
+# create an executable
+add_executable(taskCLi src/main.cpp)
+
+target_include_directories(taskCLi PRIVATE src/headers)
+
+# add the library as a dependency
+target_link_libraries(taskCLi taskTrackerLibrary)
+
+

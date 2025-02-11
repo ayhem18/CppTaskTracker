@@ -12,6 +12,7 @@
 
 # include "../taskTracker/Task.h"
 # include "../taskTracker/random_utils.h"
+# include "../taskTracker/string_utils.h"
 
 void test_Task_serialization();
 
