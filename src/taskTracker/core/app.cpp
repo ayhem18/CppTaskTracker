@@ -89,7 +89,7 @@ vec_str App::verifyDeleteInput(const vec_str& input) const {
         throw InvalidSemanticsException("Keep in mind that task ids are integers ))");
     }
 
-    return input;
+    return vec_str{command, input[2]};
 }
 
 
@@ -136,11 +136,18 @@ vec_str App::processInput(const vec_str& input) const {
         throw InvalidCommandException("The passed command is not valid");
 
     } 
-    // at this point, the exact class of the exception does not matter. Catch it and print the error message
-    // the usefulness of the message is guaranteed by the inner objects / functions. 
-    catch (const std::exception& e) {
-        std::cout << e.what() << std::endl;
+
+    catch (const InvalidSemanticsException& e) {
+        std::cout << "Invalid Semantics: " << e.what() << std::endl;
     }
+
+    catch (const InvalidFormatException& e) {
+        std::cout << "Invalid Format: " << e.what() << std::endl;
+    }
+
+    catch (const InvalidCommandException& e) {
+        std::cout << "Invalid Command: " << e.what() << std::endl;
+    }   
 
     // added to quiet the compiler
     return vec_str();
@@ -206,16 +213,15 @@ void App::runUpdateCommand(const vec_str& input) {
 void App::runDeleteCommand(const vec_str& input) {
     // the input is assume to be of the form: delete taskId
     int taskId = std::stoi(input[1]);
-    Task deletedTask = this -> manager.getTask(taskId);
     
     try {
+        Task deletedTask = this -> manager.getTask(taskId);
         this -> manager.deleteTask(taskId);
+        std::cout << "Task deleted successfully" << std::endl;
+        this -> display.displayLine(this -> getTaskRepresentation(deletedTask));
     } catch (const std::invalid_argument& e) {
         throw InvalidSemanticsException(e.what());
     }
-
-    std::cout << "Task deleted successfully" << std::endl;
-    this -> display.displayLine(this -> getTaskRepresentation(deletedTask));
 }
 
 
@@ -246,58 +252,18 @@ void App::runListCommand(const vec_str& input) {
 } 
 
 
-void App::runExitCommand(const vec_str& input) {
-    std::cout << "Exiting the program" << std::endl;
-    exit(0);
-}
-
 
 void App::runCommand(const vec_str& input) {
     vec_str verifiedInput = processInput(input);
 
-    std::cout << "past verification" << std::endl;
-
-    for (const auto& t : verifiedInput) {
-        std::cout << t << std::endl;
+    if (verifiedInput.empty()) {
+        return;
     }
 
     const std::string& listCommand{"list"};
     const std::string& addCommand{"add"};
     const std::string& updateCommand{"update"};
     const std::string& deleteCommand{"delete"};
-    const std::string& exitCommand{"exit"};
-
-    // std::map<std::string, int> commandMap = {
-    //     {listCommand, 0},
-    //     {addCommand, 1},
-    //     {updateCommand, 2},
-    //     {deleteCommand, 3},
-    //     {exitCommand, 4}
-    // };
-
-    // try {
-    // switch (commandMap[verifiedInput[0]]) {
-    //     case 0:
-    //         runListCommand(verifiedInput);
-    //         break;
-    //     case 1:
-    //         runAddCommand(verifiedInput);
-    //         break; 
-    //     case 2:
-    //         runUpdateCommand(verifiedInput);
-    //         break;
-    //     case 3:
-    //         runDeleteCommand(verifiedInput);
-    //         break;
-    //     case 4:
-    //         runExitCommand(verifiedInput);
-    //         break;
-    //     default:
-    //         throw InvalidCommandException("There is no such command as " + verifiedInput[0]);
-    // }   
-    // } catch (const std::invalid_argument& e) {
-    //     std::cout << e.what() << std::endl;
-    // }
 
     // Create command map that associates command strings with member functions
     std::map<std::string, std::function<void(const vec_str&)>> commandMap = {
@@ -305,13 +271,18 @@ void App::runCommand(const vec_str& input) {
         {addCommand, [this](const vec_str& i) { this -> runAddCommand(i); }},
         {updateCommand, [this](const vec_str& i) { this -> runUpdateCommand(i); }},
         {deleteCommand, [this](const vec_str& i) { this -> runDeleteCommand(i); }},
-        {exitCommand, [this](const vec_str& i) { this -> runExitCommand(i); }}
     };
 
     // call the corresponding function
     try {
         commandMap[verifiedInput[0]](verifiedInput); // make sure to access the element at index 0 and not 1 (because the filename was discarded in the input processing)
     } catch (const InvalidSemanticsException& e) {
+        std::cout << e.what() << std::endl;
+    }
+    catch (const InvalidFormatException& e) {
+        std::cout << e.what() << std::endl;
+    }
+    catch (const InvalidCommandException& e) {
         std::cout << e.what() << std::endl;
     }
 }

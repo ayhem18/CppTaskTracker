@@ -16,6 +16,7 @@ class TestAppInputProcessing: public App {
 
 
         void testVerifyDelete() const;
+        
         void testProcessInput() const;
 
         void run() const;

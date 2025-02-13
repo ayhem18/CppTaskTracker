@@ -92,7 +92,14 @@ vec_str Display::singleElementRepresentation(const std::string& str) const {
 
 
 std::string Display::displayLine(const vec_str& elements) const {
-    // step1: prepare the lines for each element
+    /**
+     * @brief This function is used to display a vector of strings, each referred to as an element
+     * 
+     * @param elements: each element can span multiple lines
+     * @return std::string the formatted output
+     */
+
+    // check if any element spans multiple lines
     std::vector<vec_str> elementLines {};
     for (const std::string& e: elements) {
         elementLines.push_back(this -> singleElementRepresentation(e));
@@ -112,12 +119,19 @@ std::string Display::displayLine(const vec_str& elements) const {
         vec_str ithLine {};
 
         for (const auto& lineVec : elementLines) {
+            
+            std::string ithLineInput;
+
             if (lineVec.size() > i) {
-                ithLine.push_back(lineVec[i]);
+                ithLineInput = lineVec[i];
             } 
             else {
-                ithLine.push_back(" ");
+                ithLineInput = "";
             }
+            
+            // add white spaces to the ithLineInput to have standard lengt 
+            ithLine.push_back(completeWhiteSpace(ithLineInput, this -> charsByElement));
+            
         }
 
         displayLines.push_back(join(ithLine, this -> delimiter));

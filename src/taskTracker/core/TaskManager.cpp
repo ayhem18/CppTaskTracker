@@ -179,6 +179,11 @@ int TaskManager::getLastId() const {
 
 
 Task TaskManager::getTask(const int& id) const {
+    // check if the given id exists in the taskData map 
+    if (this -> taskData.find(id) == this -> taskData.end()) {
+        throw std::invalid_argument("The given id does not exist");
+    }
+
     return this -> taskData.at(id);
 }   
 

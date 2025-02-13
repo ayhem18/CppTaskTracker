@@ -9,18 +9,21 @@
 # include <filesystem>
 
 void runAllTests() {
-    // std::cout << "Running string tests" << std::endl;   
-    // runStringTests();
+    std::cout << "Running string tests" << std::endl;   
+    runStringTests();
     
-    // std::cout << "Running task tests" << std::endl;
-    // runTaskTests();
+    std::cout << "Running task tests" << std::endl;
+    runTaskTests();
     
-    // std::cout << "Running task manager tests" << std::endl;
-    // runTaskManagerTests();  
+    std::cout << "Running task manager tests" << std::endl;
+    runTaskManagerTests();  
 
+    std::cout << "Running display tests" << std::endl;
     
     TestDisplay d {};
     d.run();
+
+    std::cout << "Running input processing tests" << std::endl;
 
     std::string file = std::filesystem::path(__FILE__).parent_path().append("data.txt").string();
 
@@ -35,6 +38,6 @@ void runAllTests() {
     appInputProcessing.run();
 
     std::cout << "All tests passed" << std::endl;
-
+    
     std::filesystem::remove(file);
 }
