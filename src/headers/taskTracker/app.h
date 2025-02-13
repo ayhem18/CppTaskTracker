@@ -53,10 +53,11 @@ public:
 namespace fs = std::filesystem;
 
 class App {
-    private:
+    protected:
+
         TaskManager manager;
-        Display display;
-    
+        Display display;    
+
         vec_str verifyListInput(const vec_str& input) const;
 
         vec_str verifyAddInput(const vec_str& input) const;

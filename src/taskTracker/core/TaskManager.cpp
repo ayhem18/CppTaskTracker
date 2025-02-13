@@ -183,5 +183,8 @@ Task TaskManager::getTask(const int& id) const {
 }   
 
 
+std::string TaskManager::getFilePath() const {
+    return this -> filePath;
+}
 
     

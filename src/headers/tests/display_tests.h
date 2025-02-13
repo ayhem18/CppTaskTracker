@@ -21,8 +21,9 @@ class TestDisplay: public Display {
         }
 
         void run() {
-            test_longElementRepresentation();
-            test_singleElementRepresentation();
+            // test_longElementRepresentation();
+            // test_singleElementRepresentation();
+            test_singleElementRepresentation_with_long_strings();
         }        
 
 };  

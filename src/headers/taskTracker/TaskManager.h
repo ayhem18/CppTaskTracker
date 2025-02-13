@@ -92,6 +92,8 @@ class TaskManager {
         
         Task getTask(const int& id) const; 
 
+        std::string getFilePath() const;
+
         // a method to read the data from the file
         void read();
 

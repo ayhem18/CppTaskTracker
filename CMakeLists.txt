@@ -18,10 +18,11 @@ add_library(taskTrackerLibrary
         src/taskTracker/core/Display.cpp
         src/taskTracker/core/app.cpp
         
-        src/tests/string_tests.cpp
-        src/tests/task_tests.cpp
-        src/tests/taskManager_tests.cpp
-        src/tests/display_tests.cpp
+        src/tests/unitTests/display_tests.cpp
+        src/tests/unitTests/taskManager_tests.cpp
+        src/tests/unitTests/task_tests.cpp
+        src/tests/unitTests/string_tests.cpp
+        src/tests/unitTests/input_processing_tests.cpp
         )
 
 

@@ -63,7 +63,10 @@ vec_str Display::singleElementRepresentation(const std::string& str) const {
 
         else {
             // this means the limit was reached 
-            lines.push_back(line);
+            // check if the line is not empty
+            if (! line.empty()) {
+                lines.push_back(line);
+            }
             // check if the length of the new token is greater than the limit 
             if (t.length() > this -> charsByElement) {
                 // if it is, split the token by calling the longElementRepresentation function

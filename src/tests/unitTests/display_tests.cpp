@@ -136,8 +136,10 @@ void TestDisplay::test_singleElementRepresentation_with_long_strings() {
         vec_str output = this -> singleElementRepresentation(input);
         vec_str flattened_output = this -> singleElementRepresentation(flattened_input);
 
+        assert (output.size() == flattened_output.size() && "The output of the flattened and standard input should be the same");
+
         for (int i = 0; i < output.size(); i++) {
-            assert(output[i] == flattened_output[i] && "The output should be the same");
+            assert(output[i] == flattened_output[i] && "The output of the flattened and standard input should be the same");
         }
     }
 }
