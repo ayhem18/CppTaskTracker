@@ -21,6 +21,7 @@ add_library(taskTrackerLibrary
         src/tests/string_tests.cpp
         src/tests/task_tests.cpp
         src/tests/taskManager_tests.cpp
+        src/tests/display_tests.cpp
         )
 
 

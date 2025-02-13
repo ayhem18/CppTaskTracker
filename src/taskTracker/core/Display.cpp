@@ -1,6 +1,14 @@
 # include "../headers/taskTracker/Display.h"
 
 vec_str Display::longElementRepresentation(const std::string& str) const {
+    /**
+     * @brief This function is used to split a string whose length exceeds the limit (this -> charsByElement)
+     * into multiple strings, each of which has a length less than or equal to the limit.
+     * 
+     * @param str: the string to be split
+     * @return vec_str: a vector of strings, each of which has a length less than or equal to the limit
+     */
+
     std::string strCopy {str};
 
     vec_str res {};
@@ -23,8 +31,16 @@ vec_str Display::longElementRepresentation(const std::string& str) const {
 }
 
 
-vec_str Display::elementRepresentation(const std::string& str) const {
-    // step1: split a string using spaces
+vec_str Display::singleElementRepresentation(const std::string& str) const {
+    /**
+     * @brief given a string that might contain spaces (in other words, a sentence of a sequence of words),
+     * this function splits the string into multiple strings, each of which has a length less than or equal to the limit (this -> charsByElement)
+     * 
+     * @param str: the string to be split
+     * @return vec_str: a vector of strings, each of which has a length less than or equal to the limit
+     */
+
+
     vec_str tokens {splitString(str, " ")};
 
     vec_str lines{};
@@ -36,10 +52,10 @@ vec_str Display::elementRepresentation(const std::string& str) const {
         // define the current length
         // check if the new token + the current length exceeds the limit for each element
 
-        currentLength += static_cast<int> (currentLength == 0) * 1 + t.length();
+        currentLength += static_cast<int> (currentLength != 0) * 1 + t.length();
 
         if (currentLength <= this->charsByElement) {
-            if (currentLength != 0) {
+            if (currentLength != t.length()) {
                 line += " ";
             }
             line += t;
@@ -76,7 +92,7 @@ std::string Display::displayLine(const vec_str& elements) const {
     // step1: prepare the lines for each element
     std::vector<vec_str> elementLines {};
     for (const std::string& e: elements) {
-        elementLines.push_back(this -> elementRepresentation(e));
+        elementLines.push_back(this -> singleElementRepresentation(e));
     }
 
     // step2: find the element with the maximum number of lines
