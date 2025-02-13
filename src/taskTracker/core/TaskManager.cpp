@@ -1,4 +1,3 @@
-# include <fstream>
 # include "../headers/taskTracker/TaskManager.h"
 
 void TaskManager::persist() const {
@@ -16,16 +15,21 @@ void TaskManager::persist() const {
 }
 
 void TaskManager::read(){
-    // read the file line by line
+
+    // check if the file exists
+    if (!std::filesystem::exists(this -> filePath)) {
+        throw std::invalid_argument("The file does not exist");
+    }
+
     std::ifstream file(this -> filePath);
 
     // check if the file exists
     if (!file.is_open()) {
-        throw std::invalid_argument("The file does not exist");
+        throw std::invalid_argument("Cannot open the file");
     }
 
-    // check if the file is empty    
-    if (file.peek() == std::ifstream::traits_type::eof()) {
+    // check if the file is empty
+    if (std::filesystem::is_empty(this -> filePath)) {
         throw std::invalid_argument("The file is empty");
     }
 

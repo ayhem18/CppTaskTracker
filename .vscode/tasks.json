@@ -1,0 +1,68 @@
+{
+    
+    "tasks": [
+        
+        // this is a custom task that builds and runs the project.
+        {
+            "type": "shell",
+            "label": "Build and Run Project",
+            "command": "bash",
+            "args": [
+                "${workspaceFolder}/src/run_script.sh"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build and run the project using run_script.sh"
+        },
+
+        // a custom task that builds the project using CMake
+        {
+            "type": "shell",
+            "label": "CMake: Build",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build"
+            ],
+
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build the project using CMake"
+        },
+
+        // a custom task that moves the executable to src folder
+        {
+            "type": "shell",
+            "label": "Move Executable",
+            "command": "mv",
+            "args": [
+                "${workspaceFolder}/build/taskCLi",
+                "${workspaceFolder}/src/taskCLi"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Move taskCLi executable from build to src folder"
+        },
+
+        {
+            "label": "Build and Move",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "CMake: Build",
+                "Move Executable"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}

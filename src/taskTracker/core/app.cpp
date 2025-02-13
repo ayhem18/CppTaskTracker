@@ -96,8 +96,7 @@ vec_str App::verifyDeleteInput(const vec_str& input) const {
 void App::verifyCommonFormat(const vec_str& input) const {
     if (input.size() <= 1 || input.size() > 4) {
         throw InvalidGeneralInputException ("TaskTracker expects between 1 and 3 arguments");
-    }
-
+    }    
     // might add other general checks afterward
 }
 
@@ -117,7 +116,7 @@ vec_str App::processInput(const vec_str& input) const {
         // Try each verifier until one succeeds
         for (const auto& verifier : verifiers) {
             try {
-                vec_str verifiedInput = verifier(input);
+                vec_str verifiedInput{verifier(input)};
                 return verifiedInput;
             }
             catch (const InvalidCommandException& e) {
@@ -165,20 +164,21 @@ vec_str App::getTaskRepresentation(const Task& task) const {
 
 
 void App::runAddCommand(const vec_str& input) {
-    // the input is verified
-    std::string description = input[2]; 
+    // keep in mind that the input here does not include the fileName
+
+    std::string description = input[1]; 
     Task newTask = this -> manager.addTask(description); 
 
     std::cout << "New Task added successfully" << std::endl; 
 
-    this -> display.displayLine(this -> getTaskRepresentation(newTask)); 
+    std::cout << this -> display.displayLine(this -> getTaskRepresentation(newTask)) << std::endl; 
 }
 
 
 void App::runUpdateCommand(const vec_str& input) {
-    // get the task id and the new description
-    int taskId = std::stoi(input[2]);
-    std::string arg = input[3];
+    // the input is assume to be of the form: update taskId (taskState / description)
+    int taskId = std::stoi(input[1]);
+    std::string arg = input[2];
     
     // in the update command: updating the state is prioritized over updating the description 
     // so check if the last argument is a valid state
@@ -204,7 +204,8 @@ void App::runUpdateCommand(const vec_str& input) {
 
 
 void App::runDeleteCommand(const vec_str& input) {
-    int taskId = std::stoi(input[2]);
+    // the input is assume to be of the form: delete taskId
+    int taskId = std::stoi(input[1]);
     Task deletedTask = this -> manager.getTask(taskId);
     
     try {
@@ -219,15 +220,15 @@ void App::runDeleteCommand(const vec_str& input) {
 
 
 void App::runListCommand(const vec_str& input) {
-    // get the state from the input
+    // the input is assume to be of the form: list [state]  
     vt tasks;
 
-    if (input.size() == 2) {
+    if (input.size() == 1) {
         // list all tasks
         tasks = this -> manager.listTasks();
     }
     else {
-        tasks = this -> manager.listTasks(getTaskState(input[2]));
+        tasks = this -> manager.listTasks(getTaskState(input[1]));
     }
     
     if (tasks.empty()) {
@@ -236,11 +237,11 @@ void App::runListCommand(const vec_str& input) {
     }
     
     vec_str header = {"ID", "Description", "State", "Creation Time", "Last Update Time"}; 
-    this -> display.displayLine(header);
+    std::cout << this -> display.displayLine(header) << std::endl;
 
     // build a vector of task representations   
     for (const auto& task : tasks) {
-        this -> display.displayLine(this -> getTaskRepresentation(task));
+        std::cout << this -> display.displayLine(this -> getTaskRepresentation(task)) << std::endl;
     }
 } 
 
@@ -254,18 +255,62 @@ void App::runExitCommand(const vec_str& input) {
 void App::runCommand(const vec_str& input) {
     vec_str verifiedInput = processInput(input);
 
+    std::cout << "past verification" << std::endl;
+
+    for (const auto& t : verifiedInput) {
+        std::cout << t << std::endl;
+    }
+
+    const std::string& listCommand{"list"};
+    const std::string& addCommand{"add"};
+    const std::string& updateCommand{"update"};
+    const std::string& deleteCommand{"delete"};
+    const std::string& exitCommand{"exit"};
+
+    // std::map<std::string, int> commandMap = {
+    //     {listCommand, 0},
+    //     {addCommand, 1},
+    //     {updateCommand, 2},
+    //     {deleteCommand, 3},
+    //     {exitCommand, 4}
+    // };
+
+    // try {
+    // switch (commandMap[verifiedInput[0]]) {
+    //     case 0:
+    //         runListCommand(verifiedInput);
+    //         break;
+    //     case 1:
+    //         runAddCommand(verifiedInput);
+    //         break; 
+    //     case 2:
+    //         runUpdateCommand(verifiedInput);
+    //         break;
+    //     case 3:
+    //         runDeleteCommand(verifiedInput);
+    //         break;
+    //     case 4:
+    //         runExitCommand(verifiedInput);
+    //         break;
+    //     default:
+    //         throw InvalidCommandException("There is no such command as " + verifiedInput[0]);
+    // }   
+    // } catch (const std::invalid_argument& e) {
+    //     std::cout << e.what() << std::endl;
+    // }
+
     // Create command map that associates command strings with member functions
     std::map<std::string, std::function<void(const vec_str&)>> commandMap = {
-        {"list", [this](const vec_str& i) { runListCommand(i); }},
-        {"add", [this](const vec_str& i) { runAddCommand(i); }},
-        {"update", [this](const vec_str& i) { runUpdateCommand(i); }},
-        {"delete", [this](const vec_str& i) { runDeleteCommand(i); }},
-        {"exit", [this](const vec_str& i) { runExitCommand(i); }}
+        {listCommand, [this](const vec_str& i) { this -> runListCommand(i); }},
+        {addCommand, [this](const vec_str& i) { this -> runAddCommand(i); }},
+        {updateCommand, [this](const vec_str& i) { this -> runUpdateCommand(i); }},
+        {deleteCommand, [this](const vec_str& i) { this -> runDeleteCommand(i); }},
+        {exitCommand, [this](const vec_str& i) { this -> runExitCommand(i); }}
     };
 
     // call the corresponding function
     try {
-        commandMap[verifiedInput[0]](verifiedInput);
+        commandMap[verifiedInput[0]](verifiedInput); // make sure to access the element at index 0 and not 1 (because the filename was discarded in the input processing)
     } catch (const InvalidSemanticsException& e) {
         std::cout << e.what() << std::endl;
     }

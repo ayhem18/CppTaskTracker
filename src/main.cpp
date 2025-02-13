@@ -17,19 +17,37 @@ int main(int argc, char* argv[]) {
     fs::path filePath = fs::current_path().append("data.txt");
 
 
-    std::ofstream file(filePath, std::ios::app);
-    if (!file) {
-        throw std::runtime_error("Could not create or open file: " + filePath.string());
+    if (!fs::exists(filePath)) {
+        std::ofstream file(filePath, std::ios::app);
+        file << "0" << std::endl;
+        file.close();
     }
-    file.close(); 
-
 
     std::cout << filePath.string() << std::endl; 
 
     App app(filePath.string());
 
-    // until I figure out how to make the executable, use the following code 
-    std::vector<std::string> arguments = {"file_name", "list"};
 
+    std::vector<std::string> arguments = {"file_name", "list"};
     app.runCommand(arguments);
+
+    arguments  =  {"file_name", "add", "test task"};
+    app.runCommand(arguments);
+
+    arguments  =  {"file_name", "list"};
+    app.runCommand(arguments);
+
+    // arguments  =  {"file_name", "update", "1", "test task 2"};
+    // app.runCommand(arguments);
+
+    // arguments  =  {"file_name", "list"};
+    // app.runCommand(arguments);
+
+    // arguments  =  {"file_name", "delete", "1"};
+    // app.runCommand(arguments);
+
+    // arguments  =  {"file_name", "list"};
+    // app.runCommand(arguments);
+
+
 }

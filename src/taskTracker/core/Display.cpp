@@ -111,6 +111,6 @@ std::string Display::displayLine(const vec_str& elements) const {
 std::string Display::getFormattedTime(const time_t& time) const {
     std::tm* tm = std::localtime(&time);
     char buffer[80];
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm);
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M", tm);
     return std::string(buffer); 
 }
