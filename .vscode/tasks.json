@@ -63,6 +63,21 @@
                 "isDefault": true
             }
         }
+
+        ,
+        {
+            "type": "shell",
+            "label": "Run Tests",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Build and Move"],
+            "command": "${workspaceFolder}/src/taskCLi",
+            "args": ["test"],
+            "group": "test",
+            "problemMatcher": [],
+            "detail": "Build and run tests"
+        }
+
+        
     ],
     "version": "2.0.0"
 }

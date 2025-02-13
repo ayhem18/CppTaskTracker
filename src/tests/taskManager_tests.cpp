@@ -2,6 +2,14 @@
 
 // utility functions to work with files
 
+std::string getPathToCurrentFile() {
+    // Get the absolute path to the current source file
+    // __FILE__ is a preprocessor macro that contains the current file path
+    // This ensures we get the correct path regardless of working directory
+    return std::string(__FILE__);
+}
+
+
 std::string createTempTxtFile(const std::string& fileName, const std::string& content) {
     std::string filePath;
 
@@ -30,9 +38,12 @@ void deleteTempTxtFile(const std::string& filePath) {
 // test invalid input 
 void testTaskManagerReadFiles1() {
     // create  an empty file
-    std::string file = "temp.txt";
-    const std::string filePath = createTempTxtFile(file, "");
+    // make sure the file is in the same directory as the current file
+    std::string currentFilePath = getPathToCurrentFile();
+    // make sure the file is in the same directory as the current file
+    fs::path path = fs::path(currentFilePath).parent_path().append("temp.txt");
 
+    const std::string filePath = createTempTxtFile(path.string(), "");
 
     try{ 
         TaskManager tm {filePath};
@@ -45,7 +56,7 @@ void testTaskManagerReadFiles1() {
 
     for (int i = 0; i < 100; i++) {
 
-        const std::string filePathWithLastId = createTempTxtFile(file, std::to_string(i) + "\n");
+        const std::string filePathWithLastId = createTempTxtFile(filePath, std::to_string(i) + "\n");
         
         try {
             TaskManager manager {filePathWithLastId};
@@ -58,6 +69,9 @@ void testTaskManagerReadFiles1() {
             deleteTempTxtFile(filePathWithLastId);
             assert(false && "task manager should not throw an exception");
         }
+        // the destructor of the task manager (callled at the end of try block) will persist the tasks to the file 
+        // so we need to delete the file after the test
+        deleteTempTxtFile(filePathWithLastId);
     }
 
 }
@@ -118,10 +132,7 @@ void testTaskManagerReadFiles2() {
 
     std::string content = join(lines, "\n");
 
-    fs::path path = fs::current_path().append("tests/fileSamples/sample1.txt");
-
-    // create a file with the tasks
-    std::string filePath = createTempTxtFile(path.string(), content);
+    fs::path filePath = fs::path(getPathToCurrentFile()).parent_path().append("fileSamples/sample1.txt");
 
     // read the file
     TaskManager m {filePath};
@@ -247,7 +258,7 @@ void testTaskManagerReadPersist() {
 
     std::string content = join(lines, "\n");
 
-    fs::path path = fs::current_path().append("tests/fileSamples/sample2.txt");
+    fs::path path = fs::path(getPathToCurrentFile()).parent_path().append("fileSamples/sample2.txt");
 
     // create a file with the tasks
     std::string filePath = createTempTxtFile(path.string(), content);
@@ -295,7 +306,7 @@ void testTaskManagerAdd() {
     // create a file to save the tasks
     
     for (int i = 0; i < 10; i++ ) {
-        fs::path path = fs::current_path().append("tests/fileSamples/sample4.txt");
+        fs::path path = fs::path(getPathToCurrentFile()).parent_path().append("fileSamples/sample4.txt");
 
         // create a file with the tasks
         std::string filePath = createTempTxtFile(path.string(), std::to_string(i));
@@ -331,7 +342,7 @@ void testTaskManagerUpdate() {
 
     std::string content = join(lines, "\n");
 
-    fs::path path = fs::current_path().append("tests/fileSamples/sample5.txt");
+    fs::path path = fs::path(getPathToCurrentFile()).parent_path().append("fileSamples/sample5.txt");
 
     std::string filePath = createTempTxtFile(path.string(), content);
     
@@ -410,7 +421,7 @@ void testTaskManagerDelete() {
 
     std::string content = join(lines, "\n");
 
-    fs::path path = fs::current_path().append("tests/fileSamples/sample5.txt");
+    fs::path path = fs::path(getPathToCurrentFile()).parent_path().append("fileSamples/sample5.txt");
 
     std::string filePath = createTempTxtFile(path.string(), content);
 

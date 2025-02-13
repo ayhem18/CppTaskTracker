@@ -5,11 +5,16 @@
 # include <filesystem>
 
 # include "headers/taskTracker/app.h"
-
+# include "headers/tests/test_suit.h"
 
 namespace fs = std::filesystem;
 
 int main(int argc, char* argv[]) {
+
+    if (argc > 1 && std::string(argv[1]) == "test") {
+        runAllTests();
+        return 0;
+    }
 
     std::cout << "running some code" << std::endl;
 
