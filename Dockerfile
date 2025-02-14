@@ -36,20 +36,17 @@ RUN mkdir CppTaskTracker
 # copy the source code into the image
 COPY . ./CppTaskTracker
 
+# create a data.txt file with the number 0
+# RUN echo 0 >> ./CppTaskTracker/src/data.txt
+
 # at this point the application is built and the binary is in the executable was moved to the ./repo/src/taskCLient
 RUN chmod +x ./CppTaskTracker/src/build_script.sh && ./CppTaskTracker/src/build_script.sh
 
 # add the executable to the path
 ENV PATH="$PATH:/usr/local/app/CppTaskTracker/src"
 
-# create a new user
-RUN useradd tempUser
-
-# set the created user as the active user in the image
-USER tempUser
-
 # add the executable file to the path   
-    # ENV PATH="/usr/local/app/repo/src:$PATH"
+ENV PATH="/usr/local/app/repo/src:$PATH"
 
 # run the bash shell as the default command
 CMD ["/bin/bash"]   
