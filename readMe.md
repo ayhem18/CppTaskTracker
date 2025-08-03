@@ -30,23 +30,36 @@ The `.vscode` directory contains a launch.json that can be used to debug and run
 # Project Structure
 
 src/
+
 ├── headers
-│   ├── app.h: the main object of the application
-│   ├── taskManager.h: the manager of the tasks
-│   └── task.h: the task object 
-│   └── Display.h: for nice Command Line formatting
-│   └── random_utils.h: functions to generate random numbers / strings 
-│   └── string_utils.h: functions to works with strings
+
+    ├── app.h: the main object of the application
+
+    ├── taskManager.h: the manager of the tasks
+
+    |── task.h: the task object 
+
+    |── Display.h: for nice Command Line formatting
+
+    |── random_utils.h: functions to generate random numbers / strings 
+
+    ├── string_utils.h: functions to works with strings
+
 ├── taskTracker
+
     basically the source files of the applications
+
 ├── tests
+
     simple files to test the application behavior: do not use a testing framework for now
 
 └── build_script.sh
+
 └── main.cpp: the application entry point
 
 
 CMakeLists.txt
+
 ReadMe.md
 
 

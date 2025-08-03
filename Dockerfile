@@ -22,13 +22,16 @@ RUN chmod +x cmake_install.sh && ./cmake_install.sh < interactive_cmake_install.
 RUN rm interactive_cmake_install.txt
 
 # passing "y" twice to the installer installs the application in the working directory: which is /usr/local/app
-# do not forget to add the bin directory to the path
 ENV CMAKE_DIR="/usr/local/app/cmake-3.31.5-linux-x86_64/bin" 
+# do not forget to add the bin directory to the path
 
 # add cmake to the path
 ENV PATH="$PATH:$CMAKE_DIR"
 
 RUN cmake --version
+
+# Create a non-root user
+RUN useradd -ms /bin/bash appuser
 
 # create a directory for the repo
 RUN mkdir CppTaskTracker
@@ -36,17 +39,17 @@ RUN mkdir CppTaskTracker
 # copy the source code into the image
 COPY . ./CppTaskTracker
 
-# create a data.txt file with the number 0
-# RUN echo 0 >> ./CppTaskTracker/src/data.txt
+# Give ownership to the new user
+RUN chown -R appuser:appuser /usr/local/app/CppTaskTracker
+
+# Switch to the non-root user
+USER appuser
 
 # at this point the application is built and the binary is in the executable was moved to the ./repo/src/taskCLient
 RUN chmod +x ./CppTaskTracker/src/build_script.sh && ./CppTaskTracker/src/build_script.sh
 
 # add the executable to the path
 ENV PATH="$PATH:/usr/local/app/CppTaskTracker/src"
-
-# add the executable file to the path   
-ENV PATH="/usr/local/app/repo/src:$PATH"
 
 # run the bash shell as the default command
 CMD ["/bin/bash"]   
